@@ -1,0 +1,3 @@
+My product, isChadHappy, is a very powerful tool to check on the emotional status of my friend Chad. His entire happiness depends on the adc player Geranimo not being in masters. As long as Geranimo is stuck in diamond my friend will be happy. From any point in the world we can figure out if Chad is happy. Not only do those who know Chad will benefit but anyone who also enjoys it when Geranimo is Diamond can use this website, with Chad as a proxy they can figure out if they are happy or not.
+
+This product will be used mostly by a group of only 5 people. However, considering how many people dislike Geranimo it may grow exponentially, I cannot predict the future.
