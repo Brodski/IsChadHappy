@@ -96,10 +96,11 @@
             let rank = await getAccountRanking(id)
             LOG("this is rank")
             LOG(rank)
-            
-            for (let type of rank){
-                if (type.queueType == "RANKED_SOLO_5x5"){
-                    rankings.push(type)                    
+            if (rank != "error") { // again, shitty error checking. Also repeated code
+                for (let type of rank){
+                    if (type.queueType == "RANKED_SOLO_5x5"){
+                        rankings.push(type)                    
+                    }
                 }
             }
         }
