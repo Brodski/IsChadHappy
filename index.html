@@ -66,8 +66,7 @@
     }
 
     async function go() {
-        let accounts = ["Vleeko", "Sadge adc", "geranimooo", "Geranimo"]
-        
+        let accounts = ["geraniho", "Sadge adc", "geranimooo", "Geranimo"]
         let allIds = await getAllIds(accounts)
         let allRankings = await getAllRankings(allIds)
         LOG("---------------------")
@@ -80,9 +79,11 @@
     async function getAllIds(accounts) {
         let allIds = []
         for (let account of accounts) {
-            LOG(account)
+            LOG("Fetcing account: " + account)
             let id = await getId(account)
-            allIds.push(id)
+            if (id != "error") { // hacky
+                allIds.push(id)
+            }
         }
         return allIds
     }
@@ -111,9 +112,10 @@
         let response = await fetch(summonerFetchUrl).catch( () => LOG("failed request :("));
         
         if (!response || !response.ok) { 
-            renderSomethingWentWrong()
-            let msg =  response ? response.ok : "Failed, no response"
-            throw new Error(`HTTP error! Id. Status: ${msg}`); 
+            let msg =  response ? response.ok : "Failed, probably a name change"
+            renderSomethingWentWrong(msg)
+            console.error('HTTP request error! Failed to get Id.  Status: ' + msg); 
+            return "error"
         }
 
         let responseJson = await response.json();
@@ -126,9 +128,10 @@
         let response = await fetch(rankingFetchUrl).catch( () => LOG("failed request :("));
 
         if (!response.ok) { 
-            renderSomethingWentWrong()
-            let msg =  response ? response.ok : "Failed, no response"
-            throw new Error(`HTTP error! Id. Status: ${msg}`); 
+            let msg =  response ? response.ok : "Failed :("
+            renderSomethingWentWrong(msg)
+            console.error('HTTP request error! Failed to get ranking info.  Status: ' + msg); 
+            return "error"
         }
 
         let responseJson = await response.json();
@@ -184,8 +187,11 @@
                 <img src=${imgSrc} ></img>`    
     }
     
-    function renderSomethingWentWrong() {
-        document.getElementById("chadStatus").innerHTML = `<div> Something went wrong in the HTTP Request :( Probably 403, api key expire</div> `
+    function renderSomethingWentWrong(msg) {
+        let myDiv = document.createElement("div") 
+        myDiv.innerHTML = `<div> Something went wrong in a HTTP Request :( <br/>Error="${msg}"</div> `
+        
+        document.getElementsByTagName("body")[0].append(myDiv)
     }
 
     </script>
