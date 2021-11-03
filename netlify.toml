@@ -1,7 +1,0 @@
-# https://www.netlify.com/blog/2021/07/05/easy-access-environment-variables
-# access with: process.env.API_KEY;
-[context.production]
-  environment = { NOT_PRIVATE_STUFFS = "totally not top secret", API_KEY = "abc1234teeheehee" }
-
- [[context.production.plugins]]
-    package = "@netlify/plugin-sitemap"

@@ -56,8 +56,7 @@
     // let apiKey = "***REMOVED***"
     let happySrc = "./happy.png"
     let sadSrc = "./sad.png"
-    let xxx = process.env.API_KEY;
-    console.log(xxx)
+
     function LOG(msg) {
         let isDebugging = false;
         if (isDebugging) {
@@ -129,8 +128,8 @@
         let rankingFetchUrl = "https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + a_key
         let response = await fetch(rankingFetchUrl).catch( () => LOG("failed request :("));
 
-        if (!response.ok) { 
-            let msg =  response ? response.ok : "Failed :("
+        if (!response || !response.ok) { 
+            let msg =  response ? response.ok : "Failed getting rank :( "
             renderSomethingWentWrong(msg)
             console.error('HTTP request error! Failed to get ranking info.  Status: ' + msg); 
             return "error"
