@@ -58,6 +58,7 @@
     let sadSrc = "./sad.png"
 
     function LOG(msg) {
+        // let isDebugging = true;
         let isDebugging = false;
         if (isDebugging) {
             console.log(msg)
@@ -66,7 +67,7 @@
     }
 
     async function go() {
-        let accounts = ["geraniho", "hi im g", "geranimooo", "Geranimo"]
+        let accounts = ["Kittencannon 420", "hi im g", "geranimooo", "Geranimo"]
         let allIds = await getAllIds(accounts)
         let allRankings = await getAllRankings(allIds)
         LOG("---------------------")
