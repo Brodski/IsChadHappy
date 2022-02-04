@@ -58,7 +58,7 @@
 
     function LOG(msg) {
         // let isDebugging = true;
-        let isDebugging = false;
+        let isDebugging = true;
         if (isDebugging) {
             console.log(msg)
         }
@@ -174,6 +174,8 @@
                 li.innerText = info
                 ul.append(li)
             }
+            setTimeout( () => {positionAccountsOnMeter(info,summonerName)}, 500)
+            
         }
 
         // let img = document.createElement("img")
@@ -183,9 +185,84 @@
 
         let imgSrc = isChadHappy ? happySrc : sadSrc
         let chadStatText = isChadHappy ? "Chad is happy " : "Chad is sad " 
-        document.getElementById("chadStatus").innerHTML = `
-                <div> ${chadStatText} </div>
-                <img src=${imgSrc} ></img>`    
+      
+        let ladder = document.getElementById("ladder-wrap")
+        if (ladder) {
+            ladder.style.visibility = "visible";
+        }
+
+        document.getElementById("chadStatus").innerHTML = ` <div> ${chadStatText} </div> <img src=${imgSrc} ></img>`;    
+  
+    }
+
+    function positionAccountsOnMeter(info, summonerName) {
+        // let info = {
+        //         tier: rank.tier,
+        //         divsion:  rank.rank,
+        //         points: rank.leaguePoints,
+        //     }
+        const runIt = () => {
+            console.log("positionAccountsOnMeter")
+            console.log(info)
+            console.log(info.tier.toUpperCase() == "DIAMOND")
+            let division;
+            if (info.tier.toUpperCase() == "DIAMOND") {
+                switch (info.divsion.toUpperCase()) {
+                    case 'I':
+                        division = document.querySelector("#d1")
+                        console.log("Found d1")
+                        console.log(division)
+                        break
+                    case 'II':
+                        division = document.querySelector("#d2")
+                        console.log("Found d2")
+                        console.log(division)
+                        break
+                    case 'III':
+                        division = document.querySelector("#d3")
+                        console.log("Found d3")
+                        console.log(division)
+                        break
+                    case 'IV':
+                        division = document.querySelector("#d4")
+                        console.log("Found d4")
+                        console.log(division)
+                        break
+                }
+            }
+            if (info.tier.toUpperCase() == "MASTERS") {
+                division = document.querySelector("#masters")
+            }
+
+            if (!division) {
+                console.log("division not found :(")
+                return
+            }
+
+            // let offset = division.getBoundingClientRect().height - (info.points / 100) * division.getBoundingClientRect().height
+            let offset = division.getBoundingClientRect().height * (1 - (info.points / 100))
+            console.log("Bounding" ,division.getBoundingClientRect())
+            console.log("top" ,division.getBoundingClientRect().top)
+            console.log("info.points" , info.points)
+            console.log("info.points /100" , info.points/100)
+            console.log("offset" , offset)
+            let account;
+            if (document.getElementById(summonerName.replace(/\s/g, "")) ) {
+                account = document.getElementById(summonerName.replace(/\s/g, ""))
+            } else {
+                account = document.createElement("div")
+                account.id = summonerName.replace(/\s/g, "");
+                account.innerText = summonerName
+                document.body.appendChild(account)
+                account.classList.add("meter-accounts")
+            }
+
+            account.style.top = (division.getBoundingClientRect().top + offset) + "px"
+            account.style.left = division.getBoundingClientRect().left + "px"
+        }
+        runIt()
+        window.addEventListener("resize", runIt)
+
     }
     
     function renderSomethingWentWrong(msg) {
@@ -197,6 +274,59 @@
 
     </script>
     <style>
+        .wrapper {  
+            display: flex;
+        }
+        .img-wrap {
+            padding-left: 35px;
+            width: 200px;
+        }
+        .img-wrap img {
+            width: 100%
+        }
+        #ladder-wrap {
+            display: flex;
+            visibility: hidden;
+            background-color: #e7e7e7;
+        }
+        .meter-wrap {
+            min-width: 98px;
+            padding: 20px;
+            display: inline-flex;
+        }
+        .meter {
+            border: 2px solid black;
+            height: 100%;
+            width: var(--meter-width) ;
+            display: flex;
+            justify-content: space-evenly;
+            justify-content: space-between;
+            flex-direction: column;            
+        }
+        .meter > div {
+            border-bottom: 2px solid black;
+            position: relative;
+            height: 100%;
+            
+        }
+        .meter > div > .rank-text {
+            writing-mode: tb-rl;
+            height: 100%;
+            right: 0;
+            text-align: center;
+            font-size: 16px;
+            transform: translateX(100%);
+            position: absolute;
+        }
+
+        .meter > div:nth-child(-n + 2) {
+            background-color: #97008e6b;
+        }
+        .meter > div:nth-last-child(-n + 4) {  
+            background-color: #3333ff54;
+        }
+
+
         #chadStatus {
             display: inline-flex;
             font-size: 30px;
@@ -216,10 +346,135 @@
             font-weight: 400;
             list-style: circle;
         }
+        #img-masters {
+            width: 88%;
+        }
+        
+        .vert {
+            text-orientation: upright;
+            writing-mode: vertical-lr;
+            letter-spacing: -4px;
+            color: #0000008a;
+        }
+         #happy-vert {
+            
+            font-size: 20px;
+            font-weight: 900;
+            text-align: end;
+            
+        }
+        #sad-vert {
+            
+            font-size: 20px;
+            font-weight: 900;
+            
+        }
+
+        #happy-divider {        
+            border-bottom: 2px solid black;
+            margin-right: 4px;
+            margin-left: 4px;
+            margin-top: 14px;
+            margin-bottom: 14px;
+        }
+        #happy-sad-vert {
+
+            display: flex;
+            height: 74%;
+            padding-right: 7px;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        #big-divider {
+            display: flex;
+            justify-content: center;
+            /* background: linear-gradient( 90deg , white, white 45%, #000000b0 50%, white 55%, white); */
+            flex-direction: column;
+            width: 25px;
+        }
+        .meter-accounts {
+            position:absolute;
+            transform: translateY(-50%);
+            padding-left: 15px;
+            max-width: calc( var(--meter-width) - var(--account-padding ));
+            text-overflow: ellipsis;
+            overflow: hidden;
+            font-size: 14px;
+            height: 14px;
+        }
+        .meter-accounts::before {
+            content: " ";
+            width: 12px;
+            left: 0;
+            position: absolute;
+            height: 50%;
+            border-bottom: 2px solid black;
+        }
+        :root {
+            --account-padding: 15px;
+            --meter-width: 100px;
+        }
     </style>
     <body>
-        <div id="chadStatus"> </div>
-        <div id="main">
+        <div class="wrapper">
+            <div>
+                <div id="chadStatus"> </div>
+                <div id="main"> </div>
+            </div>
+            <div id="big-divider" > 
+                <div>  </div>
+            </div>
+            <div id="ladder-wrap">
+                <div class="meter-wrap" >
+
+                    <div id="happy-sad-vert"> 
+                        <div class="vert" id="sad-vert"> SAD </div>
+                        <div class="vert" id="happy-divider"></div>
+                        <div class="vert" id="happy-vert"> HAPPY </div>
+                    </div>
+                    <div class="meter"> 
+                        <div id="gm">
+                            <div class="rank-text" > GM </div>
+                        </div>
+                        <div id="masters"> 
+                            <div class="rank-text" > Masters </div>
+                        </div>
+                        <div id="d1"> 
+                            <div class="rank-text" > D1 </div>
+                        </div>
+                        <div id="d2">
+                            <div class="rank-text" > D2 </div>
+                        </div>
+                        <div id="d3"> 
+                            <div class="rank-text" > D3 </div>
+                        </div>
+                        <div id="d4"> 
+                            <div class="rank-text" > D4 </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="img-wrap">
+                    <img id="img-masters" src="./masters.png" />
+                    <img id="img-diamond" src="./diamond-trash2.png" />
+                </div>
+            </div>
         </div>
     </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

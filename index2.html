@@ -1,0 +1,227 @@
+
+
+<html>
+    <script src ="key.js"  type="text/javascript"> </script>
+    <script>
+    
+
+    window.addEventListener('load', (event) => {
+        //LOG('page is fully loaded');
+        console.log(`
+        .   mm:+.      .                '''''....-
+        s/''MMN://    +m-   .           '''''....-
+        +No:NMMN/-o/ 'NMh+ :d'  :d       '''''...-
+   /:   :MN+yMMMN:.:s+MMy+sodo 'Nd+       ''''....
+:. .Ns/' mMMs:yNMN:'./dMM/-yN/++Moo-      '''''...
+'h/+ym+o+oMMMs:+omN+':.:ym/'::/mMy'y..y    ''''...
+ dshNMNs+hNMMMy-+-/y+.s''.+-''.:dN:-hyN/   '''''..
+ sN+NdMMdsmMMMM+.y'.-.d.---.-'-:.+h.:Nmy  . '''''.
+.:MmymdMMNNMMMMN/s-/-omsysyss:.:''/+':d/::h' ''''.
+:sNMMMMMMMMMMMMMN/+ydhy:sy:dsyy/'''-.-.-+hh: '''''
+:MMmMMMMMMhmmMNmMyo/:......-.-os-''''+''-mh+'.''''
+-MMdNMNhdh::-o::o+.............+h--''+'''-o/s/''''
+.NNMNMd.:......................-+y+''''''.'-No '''
+'NNMMMm...................--.....:h:-:''':'ooh -''
+/hMMMMd-.............../ooooso....+dyo'''.'y.h:d''
+-NMMMMo..../+o+/-.....//-....-.....-/s'''''-'+NN/:
+ yMMMMy../s+-.--........--://:::-...-s'.-''  .dmy'
+ .NmMMm../-.----........+o/+syyo/....o:/d+:'.:-h''
+  +mNMM/..-//+so/.+/....-..-:--....../sssyy+''+-''
+  +dNMMd.-s++sss:.yo..................sy+ohd.-+'''
+  /NMMMMs..-...../M/.................-m+-/Ny:+''''
+   :hMMMM/.......+mm.::...............+.-dhhy.'''.
+     /dMMy........-o-......:/........-y.sh:N+'''..
+      'sMN-..............-/+.........:Ns/:yy......
+       'mMy.....://:...-//-..........:h'-/h.....--
+        .dMs.......-----::...........o+:'y/...---:
+         'yNs....../oyhs/..........-syso/d..---:::
+           -/s-..................-ym+.omN+.---:://
+             .h/...............-sNh-../NM:--::://+
+              -my-.........../yNm/....:sNssyys+++:
+               -Nm/......./yNMNo......./y.-:sNNh- 
+                /ydhsssydNMMNs-......../homMMm+d' 
+                -h-oNMMMMNh+...........-MMMMy:.o+ 
+            '/yhyms.-hmo/.....y-........mMm:''.+h/
+`)
+        console.log("--------")
+        console.log("Welcome to IsChadHappy! The website dedicated on checking the emotional status of Chad.")
+        console.log("Questions? Comments? Concerns?")
+        console.log("Contact me --> CharlesMcMurphy1@gmail.com")   
+        console.log("") 
+        console.log("Cheers") 
+        console.log("Charles McMurphy") 
+        console.log("--------") 
+        go()
+    });
+
+    let a_key = getKey();
+    let happySrc = "./happy.png"
+    let sadSrc = "./sad.png"
+
+    function LOG(msg) {
+        // let isDebugging = true;
+        let isDebugging = false;
+        if (isDebugging) {
+            console.log(msg)
+        }
+    
+    }
+
+    async function go() {
+        let accounts = ["Kittencannon 420", "hi im g", "geranimooo", "Geranimo"]
+        let allIds = await getAllIds(accounts)
+        let allRankings = await getAllRankings(allIds)
+        LOG("---------------------")
+        LOG(allRankings)
+        renderRanking(allRankings)
+
+    }
+
+
+    async function getAllIds(accounts) {
+        let allIds = []
+        for (let account of accounts) {
+            LOG("Fetcing account: " + account)
+            let id = await getId(account)
+            if (id != "error") { // hacky
+                allIds.push(id)
+            }
+        }
+        return allIds
+    }
+
+
+    async function getAllRankings(allIds) {
+        let rankings= []
+        for (let id of allIds) {
+            LOG(id)
+            let rank = await getAccountRanking(id)
+            LOG("this is rank")
+            LOG(rank)
+            if (rank != "error") { // again, shitty error checking. Also repeated code
+                for (let type of rank){
+                    if (type.queueType == "RANKED_SOLO_5x5"){
+                        rankings.push(type)                    
+                    }
+                }
+            }
+        }
+        return rankings
+    }
+
+    async function getId(account) {
+        
+        let summonerFetchUrl = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + account + "?api_key=" + a_key
+        let response = await fetch(summonerFetchUrl).catch( () => LOG("failed request :("));
+        
+        if (!response || !response.ok) { 
+            let msg =  response ? response.ok : "Failed, probably a name change"
+            renderSomethingWentWrong(msg)
+            console.error('HTTP request error! Failed to get Id.  Status: ' + msg); 
+            return "error"
+        }
+
+        let responseJson = await response.json();
+        LOG(responseJson)
+        return responseJson.id
+    }
+
+    async function getAccountRanking(id) {
+        let rankingFetchUrl = "https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + a_key
+        let response = await fetch(rankingFetchUrl).catch( () => LOG("failed request :("));
+
+        if (!response || !response.ok) { 
+            let msg =  response ? response.ok : "Failed getting rank :( "
+            renderSomethingWentWrong(msg)
+            console.error('HTTP request error! Failed to get ranking info.  Status: ' + msg); 
+            return "error"
+        }
+
+        let responseJson = await response.json();
+        LOG(responseJson)
+        return responseJson
+    }
+
+    function renderRanking(rankings) {
+        let isChadHappy = true
+ 
+        for (let rank of rankings) {
+            let queueType =  rank.queueType
+            let divsion =  rank.rank
+            let tier = rank.tier
+            let points = rank.leaguePoints
+            let summonerName = rank.summonerName
+            
+            // https://developer.riotgames.com/apis#league-v4/GET_getLeagueEntriesForSummoner   
+            // id = 5FPzgu4-Gp7asSiN2LjP9PIlUFFsSSjgJK9HVKyH1D0JpsM
+            // https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/5FPzgu4-Gp7asSiN2LjP9PIlUFFsSSjgJK9HVKyH1D0JpsM?api_key=***REMOVED***
+            let info = {
+                tier: rank.tier,
+                divsion:  rank.rank,
+                points: rank.leaguePoints,
+            }
+
+
+            let ul = document.createElement("ul")
+            ul.innerText = rank.summonerName
+            document.getElementById("main").append(ul)
+            for (const [key, val] of Object.entries(info)) {
+                if (key=='tier' && val.toUpperCase() == "MASTER") {
+                    // chadStatText = "Chad is sad &#128546;"
+                    isChadHappy = false
+                }
+                LOG(key + ": " + val);
+                let info = key + ": " + val
+                let li = document.createElement("li")
+                li.innerText = info
+                ul.append(li)
+            }
+        }
+
+        // let img = document.createElement("img")
+        // img.src = isChadHappy ? happySrc : sadSrc
+        // let chadStatText = isChadHappy ? "Chad is happy &#128522;" : "Chad is sad &#128546;" 
+        // document.getElementById("chadStatus").append(img)
+
+        let imgSrc = isChadHappy ? happySrc : sadSrc
+        let chadStatText = isChadHappy ? "Chad is happy " : "Chad is sad " 
+        document.getElementById("chadStatus").innerHTML = `
+                <div> ${chadStatText} </div>
+                <img src=${imgSrc} ></img>`    
+    }
+    
+    function renderSomethingWentWrong(msg) {
+        let myDiv = document.createElement("div") 
+        myDiv.innerHTML = `<div> Something went wrong in a HTTP Request :( <br/>Error="${msg}"</div> `
+        
+        document.getElementsByTagName("body")[0].append(myDiv)
+    }
+
+    </script>
+    <style>
+        #chadStatus {
+            display: inline-flex;
+            font-size: 30px;
+            font-weight: 600;
+        }
+        #chadStatus div:first-child {
+            align-self: center;
+        }
+        #chadStatus img {
+            width: auto;
+            height: 270px;
+        }
+        ul {
+            font-weight: 600;
+        }
+        li {
+            font-weight: 400;
+            list-style: circle;
+        }
+    </style>
+    <body>
+        <div id="chadStatus"> </div>
+        <div id="main">
+        </div>
+    </body>
+</html>
