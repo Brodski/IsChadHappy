@@ -164,7 +164,7 @@
             ul.innerText = rank.summonerName
             document.getElementById("main").append(ul)
             for (const [key, val] of Object.entries(info)) {
-                if (key=='tier' && val.toUpperCase() == "MASTER") {
+                if (key=='tier' && (val.toUpperCase() == "MASTER" || val.toUpperCase() == "GRANDMASTER")) {
                     // chadStatText = "Chad is sad &#128546;"
                     isChadHappy = false
                 }
@@ -206,7 +206,9 @@
             console.log(info)
             console.log(info.tier.toUpperCase() == "DIAMOND")
             let division;
+            let maxPoints = 100;
             if (info.tier.toUpperCase() == "DIAMOND") {
+                maxPoints = 100;
                 switch (info.divsion.toUpperCase()) {
                     case 'I':
                         division = document.querySelector("#d1")
@@ -233,6 +235,12 @@
             if (info.tier.toUpperCase() == "MASTER") {
                 console.log("Found masters")
                 division = document.querySelector("#masters")
+                maxPoints = 280;
+            }
+            if (info.tier.toUpperCase() == "GRANDMASTER") {
+                console.log("Found masters")
+                division = document.querySelector("#gm")
+                maxPoints = 700;
             }
 
             if (!division) {
@@ -241,11 +249,11 @@
             }
 
             // let offset = division.getBoundingClientRect().height - (info.points / 100) * division.getBoundingClientRect().height
-            let offset = division.getBoundingClientRect().height * (1 - (info.points / 100))
+            let offset = division.getBoundingClientRect().height * (1 - (info.points / maxPoints))
             console.log("Bounding" ,division.getBoundingClientRect())
             console.log("top" ,division.getBoundingClientRect().top)
             console.log("info.points" , info.points)
-            console.log("info.points /100" , info.points/100)
+            console.log("info.points /100" , info.points/maxPoints)
             console.log("offset" , offset)
             let account;
             if (document.getElementById(summonerName.replace(/\s/g, "")) ) {
