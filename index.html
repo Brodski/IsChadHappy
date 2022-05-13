@@ -161,7 +161,12 @@
 
 
             let ul = document.createElement("ul")
-            ul.innerText = rank.summonerName
+            let anch = document.createElement("a")
+            anch.setAttribute('href', 'https://na.op.gg/summoners/na/' + rank.summonerName)
+            anch.setAttribute('target', '_blank')
+            anch.setAttribute('rel', 'noopener noreferrer')
+            anch.innerText = rank.summonerName
+            ul.appendChild(anch)
             document.getElementById("main").append(ul)
             for (const [key, val] of Object.entries(info)) {
                 if (key=='tier' && (val.toUpperCase() == "MASTER" || val.toUpperCase() == "GRANDMASTER")) {
