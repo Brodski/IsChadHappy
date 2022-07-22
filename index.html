@@ -4,7 +4,7 @@
     
 
     window.addEventListener('load', (event) => {
-        //LOG('page is fully loaded');
+        //console.log('page is fully loaded');
         console.log(`
         .   mm:+.      .                '''''....-
         s/''MMN://    +m-   .           '''''....-
@@ -48,42 +48,282 @@
         console.log("") 
         console.log("Cheers") 
         console.log("Charles McMurphy") 
-        console.log("--------") 
+        console.log("--------\n\n\n\n\n\n\n\n") 
         go()
     });
+
+        // IDs = https://riot-api-libraries.readthedocs.io/en/latest/ids.html
+        
+        // old saved stuff
+        // {
+        //     "leagueId": "7a7ed076-d062-3079-ae71-e301c671c869",  // Your lp compared to other in a mini 100 person tabel. This is the ladder thing you can see for your division in your client. 
+        //     "queueType": "RANKED_SOLO_5x5",
+        //     "tier": "MASTER",
+        //     "summonerId": "yMlvFkenH7voKiw6uq-NFWNjAZ17OuEXAJcYLZ4aYO96wuH0IgU8pyXJwQ", // THIS!
+        //     "summonerName": "Hi im Boomer",
+        // }
+        
+
+        // https://developer.riotgames.com/apis#account-v1
+        // Account-V1 will return:
+        // (Using puuid of llIlllIlllIII)
+        // {
+        //     "puuid": "pEX94E8v3YLw8YQRcyfxO3Z8NEfp59fa_mZkplsE1JUwzash8p-ABkOOF33iIWQReQ9ipj5SkbFSFA",
+        //     "gameName": "Lolgeranimo",
+        //     "tagLine": "kekw"
+        // }
+
+               // id = encryptedId     <---------------------
+               // id = encryptedId     <---------------------
+        
+        // Summoner-V4 API will give something like this:
+        // llIlllIlllIII
+        // {
+               // id = encryptedId     <---------------------
+        //     "id": "yMlvFkenH7voKiw6uq-NFWNjAZ17OuEXAJcYLZ4aYO96wuH0IgU8pyXJwQ", 
+        //     "accountId": "VgcPLU0shoSNHfdEcOaCmfsArHsTYwU5kq_NZJGpHAKLYM-3rcaGIV-T",
+        //     "puuid": "pEX94E8v3YLw8YQRcyfxO3Z8NEfp59fa_mZkplsE1JUwzash8p-ABkOOF33iIWQReQ9ipj5SkbFSFA",
+        //     "name": "llIlllIlllIII",
+        //     "profileIconId": 3795,
+        //     "revisionDate": 1657816755121,
+        //     "summonerLevel": 124
+        // }
+
+
+        // "hi im washed up"
+        // {
+        //     "id": "4ZMNRZfEp2-G-GT26iRzY_2V2ax4O_EpCPHr_J2pPtTTUBk",
+        //     "accountId": "UcC-68qMZApASgog5IGLB6h0CGO4Xmk9kP_tH_T_Xa_UxQ8",
+        //     "puuid": "iFhVmBOF2Oah0NEV3nv3M9knkbnwqxIR9Fo99frhvAdEPLp0jClEIEvSC5CeJMry5tqUtmwYtB5YmQ",
+        //     "name": "hi im washed up",
+        //     "profileIconId": 984,
+        //     "revisionDate": 1650313166000,
+        //     "summonerLevel": 162
+        // }
+
+        // Pog Mode (Main)
+        // {
+        //     "id": "LuzJS1vMXfQOJmsqI83QLykbRzrz1FLA1JoqmGtNxvQIhec",
+        //     "accountId": "oKx14jCuKKqJDVQMgp4-c1byJlOKfiNTEPLjtt3aV6YVbeg",
+        //     "puuid": "tk7S6I1iYphuLxR43aIan_7GeUJ3yxJjfoH9k_D9KqmYbly5chpAZcEVAM9BdQyBiVr4Ss-lsbTC7w",
+        //     "name": "Pog Mode",
+        //     "profileIconId": 4076,
+        //     "revisionDate": 1658466593947,
+        //     "summonerLevel": 279
+        // }
+
+        // gameplan: use /lol/summoner/v4/summoners/by-puuid/{encryptedPUUID} instead (SUMMONER V4)
+        // then use that to hit /lol/league/v4/entries/by-summoner/{encryptedSummonerId} (LEAGUE V4)
+        // potentially go straight to LEAGUE V4 with array of encrypted
+
+        // OLD
+        // 1. Look up Summoner by in game name      https://developer.riotgames.com/apis#summoner-v4/GET_getBySummonerName
+        // 2. Then by encryptedSummonerId (recieved from 1) https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/
+        // 3. Render
+
+        // New
+        // 1. Look up encryptedSummerIds (2 above)
+        // 2. Render
+
+        
+    /************************************************************************/
+    /************************************************************************/
+    /************************************************************************/
+    /************************************************************************/
+    /************************************************************************/
+    /************************************************************************/
+    /********************                               *********************/
+    /********************                               *********************/
+    /********************          JAVASCRIPT           *********************/
+    /********************                               *********************/
+    /********************                               *********************/
+    /************************************************************************/
+    /************************************************************************/
+    /************************************************************************/
+    /************************************************************************/
+    /************************************************************************/
+    /************************************************************************/
 
     let a_key = getKey();
     let happySrc = "./happy.png"
     let sadSrc = "./sad.png"
-
-    function LOG(msg) {
-        // let isDebugging = true;
-        let isDebugging = true;
-        if (isDebugging) {
-            console.log(msg)
-        }
     
+    let accountEncryptedIds = [ 
+        "yMlvFkenH7voKiw6uq-NFWNjAZ17OuEXAJcYLZ4aYO96wuH0IgU8pyXJwQ", //  llIlllIlllIII, Hi I'm Boomer
+        "4ZMNRZfEp2-G-GT26iRzY_2V2ax4O_EpCPHr_J2pPtTTUBk", //  Hi I'm washed up
+        "LuzJS1vMXfQOJmsqI83QLykbRzrz1FLA1JoqmGtNxvQIhec", //  Pog Mode
+    ]
+    
+    // async function getIdByName(name) {
+    //     let summonerFetchUrl = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + name + "?api_key=" + a_key;
+    //     let responseJson = await makeRequest2(summonerFetchUrl, "Failed, probably a name change", 'HTTP request error! Failed to get Id.  Status: ');
+        
+
+    //     console.log(responseJson)
+    //     console.log("IMPORTANT! add this ID to Accounts array ---->", responseJson.id  )
+    //     console.log("IMPORTANT! add this ID to Accounts array ---->", responseJson.id  )
+    //     console.log("IMPORTANT! add this ID to Accounts array ---->", responseJson.id  )
+    //     console.log("IMPORTANT! add this ID to Accounts array ---->", responseJson.id  )
+    //     console.log("IMPORTANT! add this ID to Accounts array ---->", responseJson.id  )
+    //     console.log(responseJson.id)
+    //     return responseJson.id
+    // }
+    // https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/llIlllIlllIII?api_key=***REMOVED***
+    // https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/llIlllIlllIII?api_key=***REMOVED***
+   
+    class Account {
+        constructor(someObject) {
+            this.id = someObject?.id; // id = encryptedId
+            this.name = someObject?.name;
+            this.namesAll = someObject?.namesAll;
+
+            this.winsLol = null;
+            this.losesLol = null;
+
+            this.winsTft = null;
+            this.losesTft = null;
+        }
+
+        async getRankedLolById() {
+            let rankingFetchUrl = "https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + this.id + "?api_key=" + a_key;
+            let responseJson = await this.makeRequest(rankingFetchUrl, "Failed getting rank :( ", 'HTTP request error! Failed to get ranking info.  Status: ');
+            return responseJson            
+        }
+        
+
+        async getIdByName() {
+            let summonerFetchUrl = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + this.name + "?api_key=" + a_key;
+            let responseJson = await this.makeRequest(summonerFetchUrl, "Failed, probably a name change", 'HTTP request error! Failed to get Id.  Status: ');
+            
+
+            console.log(responseJson)
+            console.log("IMPORTANT! add this ID to Accounts array ---->");
+            console.log("IMPORTANT! add this ID to Accounts array ---->");
+            console.log("IMPORTANT! add this ID to Accounts array ---->");
+            console.log("IMPORTANT! add this ID to Accounts array ---->");
+            console.log(this.name + "   :   " + responseJson.id  )
+            console.log(this.name + "   :   " + responseJson.id  )
+            console.log(this.name + "   :   " + responseJson.id  )
+            console.log(this.name + "   :   " + responseJson.id  )
+            console.log(this.name + "   :   " + responseJson.id  )
+            console.log(this.name + "   :   " + responseJson.id  )
+            console.log(this.name + "   :   " + responseJson.id  )
+            console.log(this.name + "   :   " + responseJson.id  )
+            console.log(responseJson.id)
+            return responseJson.id
+        }
+        async makeRequest(fetchUrl, errorMsgRender="", errorMsgLog="" ) {
+            let response = await fetch(fetchUrl).catch( () => console.log("failed request :("));
+            
+            if (!response || !response.ok) { 
+                let msg =  response ? response.ok : errorMsgRender
+                renderSomethingWentWrong(msg)
+                console.error(errorMsgLog + " " + msg); 
+                return "error"
+            } 
+            let responseJson = await response.json()
+            return responseJson;
+        }
     }
+    
+    
+    let allAccounts = [ 
+        new Account({
+            id: "AQ36Zl7hI8x5xx3C6y3-nZ6Fa-z-xwqMMrbFnDZEu3EHh6QhZvT6MEBL2Q",
+            name: "llIlllIlllIII",
+            namesAll: ["llIlllIlllIII", "Hi I'm Boomer"]
+        }),
+        new Account({
+            id: "VpZZheO1UOaC3XDcUpD0cDkCkD5pTCBMkR36bCd534uboPk",
+            name: "hi im washed up",
+            namesAll: ["hi im washed up"]
+        }), 
+        new Account({
+            id: "oVvwQO9XPxojZURXibfAUOqWXl0M4Fvxk-qM64DMKO4u8JA", 
+            name: "Pog Mode",
+            namesAll: ["Pog Mode"]    
+        })
+    ];
 
     async function go() {
-        let accounts = ["lolGeranimo", "llIlllIlllIII", "hi im washed up"]
-        let allIds = await getAllIds(accounts)
-        let allRankings = await getAllRankings(allIds)
-        LOG("---------------------")
-        LOG(allRankings)
-        renderRanking(allRankings)
+        // let response = await allAccounts[1].getRankedLolById();
+        await doStuff();
 
+        // let accounts = ["lolGeranimo", "llIlllIlllIII", "hi im washed up"]
+        // let accounts = ["llIlllIlllIII", "hi im washed up"]
+        // let allIds = await getAllIds(accounts)
+        // let allRankings = await getAllRankings(allIds)
+        // console.log("---------------------")
+        // console.log("---------------------")
+        // console.log("---------------------")
+        // console.log("---------------------")
+        // console.log("---------------------")
+        // console.log("---------------------")
+        // console.log("---------------------")
+        // console.log("---------------------")
+        // console.log("---------------------")
+        // console.log("---------------------")
+        // console.log("---------------------")
+        // console.log("---------------------")
+        // console.log("--------------------- :)")
+        // console.log(allRankings)
+        // renderRanking(allRankings)
     }
 
+    async function doStuff() {
+        console.log("************************************");
+        console.log("******* Start fetching data ********");
+        console.log("************************************");
+        let allRankings = [];
+        for (let account of allAccounts) {
+            if (!account.id) {
+                console.log("GGetting account info my name")
+                let accountId = await account.getIdByName(); 
+                account.id = accountId;
+            } 
+            let rank = await account.getRankedLolById()
+            console.log("Rank for id: "+ account.id)
+            console.log(rank)
+
+            if (rank != "error") { // again, shitty error checking. Also repeated code
+                for (let type of rank){
+                    if (type.queueType == "RANKED_SOLO_5x5"){
+                        allRankings.push(type)                    
+                    }
+                }
+            }
+            console.log(rank)
+        }
+        console.log("************************************");
+        console.log("*******  End fetching data  ********");
+        console.log("************************************");
+        console.log("");
+        console.log("");
+        console.log("");
+        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+        console.log("^^^^^    Start Rendering     ^^^^^^")
+        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+        console.log("allRankings")
+        console.log("allRankings")
+        console.log("allRankings")
+        console.log(allRankings)
+        renderRanking(allRankings)
+    }
 
     async function getAllIds(accounts) {
         let allIds = []
-        for (let account of accounts) {
-            LOG("Fetcing account: " + account)
-            let id = await getId(account)
+        for (let accountName of accounts) {
+            console.log("*******************************************")
+            console.log("*****   Fetcing accountName: " + accountName)
+            console.log("*******************************************")
+            let id = await getIdByNameOld(accountName)
             if (id != "error") { // hacky
                 allIds.push(id)
             }
+            
+            console.log("*******************************************")
+            console.log("*****   Done with accountName " + accountName )
+            console.log("*******************************************")
         }
         return allIds
     }
@@ -92,10 +332,12 @@
     async function getAllRankings(allIds) {
         let rankings= []
         for (let id of allIds) {
-            LOG(id)
+            console.log(" =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
+            console.log(" =-=-=    BEGIN RANKING    =-=-=")
+            console.log(" =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
             let rank = await getAccountRanking(id)
-            LOG("this is rank")
-            LOG(rank)
+            console.log("Rank for id: "+ id)
+            console.log(rank)
             if (rank != "error") { // again, shitty error checking. Also repeated code
                 for (let type of rank){
                     if (type.queueType == "RANKED_SOLO_5x5"){
@@ -103,40 +345,41 @@
                     }
                 }
             }
+            console.log(" #############################")
+            console.log(" ######    END RANKING   #####")
+            console.log(" #############################")
         }
         return rankings
     }
 
-    async function getId(account) {
-        
-        let summonerFetchUrl = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + account + "?api_key=" + a_key
-        let response = await fetch(summonerFetchUrl).catch( () => LOG("failed request :("));
+    async function makeRequest(fetchUrl, errorMsgRender="", errorMsgLog="" ) {
+        console.log("SENDING THIS",  fetchUrl)
+        let response = await fetch(fetchUrl).catch( () => console.log("failed request :("));
         
         if (!response || !response.ok) { 
-            let msg =  response ? response.ok : "Failed, probably a name change"
+            let msg =  response ? response.ok : errorMsgRender
             renderSomethingWentWrong(msg)
-            console.error('HTTP request error! Failed to get Id.  Status: ' + msg); 
+            console.error(errorMsgLog + " " + msg); 
             return "error"
         }
 
         let responseJson = await response.json();
-        LOG(responseJson)
+        return responseJson
+    }
+
+    async function getIdByNameOld(account) {
+        let summonerFetchUrl = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + account + "?api_key=" + a_key;
+        let responseJson = await makeRequest(summonerFetchUrl, "Failed, probably a name change", 'HTTP request error! Failed to get Id.  Status: ');
+
+        console.log(responseJson)
         return responseJson.id
     }
 
     async function getAccountRanking(id) {
-        let rankingFetchUrl = "https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + a_key
-        let response = await fetch(rankingFetchUrl).catch( () => LOG("failed request :("));
+        let rankingFetchUrl = "https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + a_key;
+        let responseJson = await makeRequest(rankingFetchUrl, "Failed getting rank :( ", 'HTTP request error! Failed to get ranking info.  Status: ');
 
-        if (!response || !response.ok) { 
-            let msg =  response ? response.ok : "Failed getting rank :( "
-            renderSomethingWentWrong(msg)
-            console.error('HTTP request error! Failed to get ranking info.  Status: ' + msg); 
-            return "error"
-        }
-
-        let responseJson = await response.json();
-        LOG(responseJson)
+        // console.log(responseJson)
         return responseJson
     }
 
@@ -149,10 +392,6 @@
             let tier = rank.tier
             let points = rank.leaguePoints
             let summonerName = rank.summonerName
-            
-            // https://developer.riotgames.com/apis#league-v4/GET_getLeagueEntriesForSummoner   
-            // id = 5FPzgu4-Gp7asSiN2LjP9PIlUFFsSSjgJK9HVKyH1D0JpsM
-            // https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/5FPzgu4-Gp7asSiN2LjP9PIlUFFsSSjgJK9HVKyH1D0JpsM?api_key=***REMOVED***
             let info = {
                 tier: rank.tier,
                 divsion:  rank.rank,
@@ -173,7 +412,7 @@
                     // chadStatText = "Chad is sad &#128546;"
                     isChadHappy = false
                 }
-                LOG(key + ": " + val);
+                console.log(key + ": " + val);
                 let info = key + ": " + val
                 let li = document.createElement("li")
                 li.innerText = info
@@ -182,11 +421,6 @@
             setTimeout( () => {positionAccountsOnMeter(info,summonerName)}, 500)
             
         }
-
-        // let img = document.createElement("img")
-        // img.src = isChadHappy ? happySrc : sadSrc
-        // let chadStatText = isChadHappy ? "Chad is happy &#128522;" : "Chad is sad &#128546;" 
-        // document.getElementById("chadStatus").append(img)
 
         let imgSrc = isChadHappy ? happySrc : sadSrc
         let chadStatText = isChadHappy ? "Chad is happy " : "Chad is sad " 
@@ -207,9 +441,6 @@
         //         points: rank.leaguePoints,
         //     }
         const runIt = () => {
-            console.log("positionAccountsOnMeter")
-            console.log(info)
-            console.log(info.tier.toUpperCase() == "DIAMOND")
             let division;
             let maxPoints = 100;
             if (info.tier.toUpperCase() == "DIAMOND") {
@@ -238,12 +469,10 @@
                 }
             }
             if (info.tier.toUpperCase() == "MASTER") {
-                console.log("Found masters")
                 division = document.querySelector("#masters")
                 maxPoints = 280;
             }
             if (info.tier.toUpperCase() == "GRANDMASTER") {
-                console.log("Found masters")
                 division = document.querySelector("#gm")
                 maxPoints = 700;
             }
@@ -255,11 +484,11 @@
 
             // let offset = division.getBoundingClientRect().height - (info.points / 100) * division.getBoundingClientRect().height
             let offset = division.getBoundingClientRect().height * (1 - (info.points / maxPoints))
-            console.log("Bounding" ,division.getBoundingClientRect())
-            console.log("top" ,division.getBoundingClientRect().top)
-            console.log("info.points" , info.points)
-            console.log("info.points /100" , info.points/maxPoints)
-            console.log("offset" , offset)
+            // console.log("Bounding" ,division.getBoundingClientRect())
+            // console.log("top" ,division.getBoundingClientRect().top)
+            // console.log("info.points" , info.points)
+            // console.log("info.points /100" , info.points/maxPoints)
+            // console.log("offset" , offset)
             let account;
             if (document.getElementById(summonerName.replace(/\s/g, "")) ) {
                 account = document.getElementById(summonerName.replace(/\s/g, ""))
@@ -287,6 +516,25 @@
     }
 
     </script>
+
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- //////////////////                   //////////////////////// -->
+    <!-- //////////////////                   //////////////////////// -->
+    <!-- //////////////////                   //////////////////////// -->
+    <!-- //////////////////        CSS        //////////////////////// -->
+    <!-- //////////////////                   //////////////////////// -->
+    <!-- //////////////////                   //////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
     <style>
         .wrapper {  
             display: flex;
@@ -430,6 +678,25 @@
             --meter-width: 100px;
         }
     </style>
+    
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- //////////////////                   //////////////////////// -->
+    <!-- //////////////////                   //////////////////////// -->
+    <!-- //////////////////                   //////////////////////// -->
+    <!-- //////////////////        HTML       //////////////////////// -->
+    <!-- //////////////////                   //////////////////////// -->
+    <!-- //////////////////                   //////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////// -->
     <body>
         <div class="wrapper">
             <div>
