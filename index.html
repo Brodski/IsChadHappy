@@ -53,32 +53,13 @@
     });
 
         // IDs = https://riot-api-libraries.readthedocs.io/en/latest/ids.html
-        
-        // old saved stuff
-        // {
-        //     "leagueId": "7a7ed076-d062-3079-ae71-e301c671c869",  // Your lp compared to other in a mini 100 person tabel. This is the ladder thing you can see for your division in your client. 
-        //     "queueType": "RANKED_SOLO_5x5",
-        //     "tier": "MASTER",
-        //     "summonerId": "yMlvFkenH7voKiw6uq-NFWNjAZ17OuEXAJcYLZ4aYO96wuH0IgU8pyXJwQ", // THIS!
-        //     "summonerName": "Hi im Boomer",
-        // }
-        
-
-        // https://developer.riotgames.com/apis#account-v1
-        // Account-V1 will return:
-        // (Using puuid of llIlllIlllIII)
-        // {
-        //     "puuid": "pEX94E8v3YLw8YQRcyfxO3Z8NEfp59fa_mZkplsE1JUwzash8p-ABkOOF33iIWQReQ9ipj5SkbFSFA",
-        //     "gameName": "Lolgeranimo",
-        //     "tagLine": "kekw"
-        // }
-
-               // id = encryptedId     <---------------------
-               // id = encryptedId     <---------------------
-        
+        // 
+        //
         // Summoner-V4 API will give something like this:
         // llIlllIlllIII
         // {
+               // id = encryptedId     <---------------------
+               // id = encryptedId     <---------------------
                // id = encryptedId     <---------------------
         //     "id": "yMlvFkenH7voKiw6uq-NFWNjAZ17OuEXAJcYLZ4aYO96wuH0IgU8pyXJwQ", 
         //     "accountId": "VgcPLU0shoSNHfdEcOaCmfsArHsTYwU5kq_NZJGpHAKLYM-3rcaGIV-T",
@@ -112,10 +93,6 @@
         //     "summonerLevel": 279
         // }
 
-        // gameplan: use /lol/summoner/v4/summoners/by-puuid/{encryptedPUUID} instead (SUMMONER V4)
-        // then use that to hit /lol/league/v4/entries/by-summoner/{encryptedSummonerId} (LEAGUE V4)
-        // potentially go straight to LEAGUE V4 with array of encrypted
-
         // OLD
         // 1. Look up Summoner by in game name      https://developer.riotgames.com/apis#summoner-v4/GET_getBySummonerName
         // 2. Then by encryptedSummonerId (recieved from 1) https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/
@@ -148,29 +125,7 @@
     let happySrc = "./happy.png"
     let sadSrc = "./sad.png"
     
-    let accountEncryptedIds = [ 
-        "yMlvFkenH7voKiw6uq-NFWNjAZ17OuEXAJcYLZ4aYO96wuH0IgU8pyXJwQ", //  llIlllIlllIII, Hi I'm Boomer
-        "4ZMNRZfEp2-G-GT26iRzY_2V2ax4O_EpCPHr_J2pPtTTUBk", //  Hi I'm washed up
-        "LuzJS1vMXfQOJmsqI83QLykbRzrz1FLA1JoqmGtNxvQIhec", //  Pog Mode
-    ]
-    
-    // async function getIdByName(name) {
-    //     let summonerFetchUrl = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + name + "?api_key=" + a_key;
-    //     let responseJson = await makeRequest2(summonerFetchUrl, "Failed, probably a name change", 'HTTP request error! Failed to get Id.  Status: ');
-        
 
-    //     console.log(responseJson)
-    //     console.log("IMPORTANT! add this ID to Accounts array ---->", responseJson.id  )
-    //     console.log("IMPORTANT! add this ID to Accounts array ---->", responseJson.id  )
-    //     console.log("IMPORTANT! add this ID to Accounts array ---->", responseJson.id  )
-    //     console.log("IMPORTANT! add this ID to Accounts array ---->", responseJson.id  )
-    //     console.log("IMPORTANT! add this ID to Accounts array ---->", responseJson.id  )
-    //     console.log(responseJson.id)
-    //     return responseJson.id
-    // }
-    // https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/llIlllIlllIII?api_key=***REMOVED***
-    // https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/llIlllIlllIII?api_key=***REMOVED***
-   
     class Account {
         constructor(someObject) {
             this.id = someObject?.id; // id = encryptedId
@@ -210,8 +165,22 @@
             console.log(this.name + "   :   " + responseJson.id  )
             console.log(this.name + "   :   " + responseJson.id  )
             console.log(responseJson.id)
+
             return responseJson.id
         }
+
+        async getTft() {
+            let tftFetchUrl = "https://na1.api.riotgames.com/tft/league/v1/entries/by-summoner/" + this.id + "?api_key=" + a_key;
+            console.log("TFT ", tftFetchUrl)
+            let responseJson = await this.makeRequest(tftFetchUrl, "Failed, getting TFT rank", 'HTTP request error! Failed to get Id.  Status: ');
+
+            console.log("TFT")
+            console.log("TFT")
+            console.log("TFT")
+            console.log(responseJson)
+            return responseJson
+        }
+
         async makeRequest(fetchUrl, errorMsgRender="", errorMsgLog="" ) {
             let response = await fetch(fetchUrl).catch( () => console.log("failed request :("));
             
@@ -246,31 +215,6 @@
     ];
 
     async function go() {
-        // let response = await allAccounts[1].getRankedLolById();
-        await doStuff();
-
-        // let accounts = ["lolGeranimo", "llIlllIlllIII", "hi im washed up"]
-        // let accounts = ["llIlllIlllIII", "hi im washed up"]
-        // let allIds = await getAllIds(accounts)
-        // let allRankings = await getAllRankings(allIds)
-        // console.log("---------------------")
-        // console.log("---------------------")
-        // console.log("---------------------")
-        // console.log("---------------------")
-        // console.log("---------------------")
-        // console.log("---------------------")
-        // console.log("---------------------")
-        // console.log("---------------------")
-        // console.log("---------------------")
-        // console.log("---------------------")
-        // console.log("---------------------")
-        // console.log("---------------------")
-        // console.log("--------------------- :)")
-        // console.log(allRankings)
-        // renderRanking(allRankings)
-    }
-
-    async function doStuff() {
         console.log("************************************");
         console.log("******* Start fetching data ********");
         console.log("************************************");
@@ -282,8 +226,13 @@
                 account.id = accountId;
             } 
             let rank = await account.getRankedLolById()
-            console.log("Rank for id: "+ account.id)
+            if (rank.summonerName) { 
+                account.name = rank.summonerName 
+            }
+            console.log("Rank for id: " + account.id)
             console.log(rank)
+
+            // let tftRank = await account.getTft();
 
             if (rank != "error") { // again, shitty error checking. Also repeated code
                 for (let type of rank){
@@ -310,81 +259,10 @@
         renderRanking(allRankings)
     }
 
-    async function getAllIds(accounts) {
-        let allIds = []
-        for (let accountName of accounts) {
-            console.log("*******************************************")
-            console.log("*****   Fetcing accountName: " + accountName)
-            console.log("*******************************************")
-            let id = await getIdByNameOld(accountName)
-            if (id != "error") { // hacky
-                allIds.push(id)
-            }
-            
-            console.log("*******************************************")
-            console.log("*****   Done with accountName " + accountName )
-            console.log("*******************************************")
-        }
-        return allIds
-    }
-
-
-    async function getAllRankings(allIds) {
-        let rankings= []
-        for (let id of allIds) {
-            console.log(" =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
-            console.log(" =-=-=    BEGIN RANKING    =-=-=")
-            console.log(" =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
-            let rank = await getAccountRanking(id)
-            console.log("Rank for id: "+ id)
-            console.log(rank)
-            if (rank != "error") { // again, shitty error checking. Also repeated code
-                for (let type of rank){
-                    if (type.queueType == "RANKED_SOLO_5x5"){
-                        rankings.push(type)                    
-                    }
-                }
-            }
-            console.log(" #############################")
-            console.log(" ######    END RANKING   #####")
-            console.log(" #############################")
-        }
-        return rankings
-    }
-
-    async function makeRequest(fetchUrl, errorMsgRender="", errorMsgLog="" ) {
-        console.log("SENDING THIS",  fetchUrl)
-        let response = await fetch(fetchUrl).catch( () => console.log("failed request :("));
-        
-        if (!response || !response.ok) { 
-            let msg =  response ? response.ok : errorMsgRender
-            renderSomethingWentWrong(msg)
-            console.error(errorMsgLog + " " + msg); 
-            return "error"
-        }
-
-        let responseJson = await response.json();
-        return responseJson
-    }
-
-    async function getIdByNameOld(account) {
-        let summonerFetchUrl = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + account + "?api_key=" + a_key;
-        let responseJson = await makeRequest(summonerFetchUrl, "Failed, probably a name change", 'HTTP request error! Failed to get Id.  Status: ');
-
-        console.log(responseJson)
-        return responseJson.id
-    }
-
-    async function getAccountRanking(id) {
-        let rankingFetchUrl = "https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + a_key;
-        let responseJson = await makeRequest(rankingFetchUrl, "Failed getting rank :( ", 'HTTP request error! Failed to get ranking info.  Status: ');
-
-        // console.log(responseJson)
-        return responseJson
-    }
-
     function renderRanking(rankings) {
         let isChadHappy = true
+        let wins = 0;
+        let losses = 0;
  
         for (let rank of rankings) {
             let queueType =  rank.queueType
@@ -396,9 +274,12 @@
                 tier: rank.tier,
                 divsion:  rank.rank,
                 points: rank.leaguePoints,
+                winLose: rank.wins + " - " + rank.losses
             }
 
 
+            wins = wins + rank.wins;
+            losses = losses + rank.losses;
             let ul = document.createElement("ul")
             let anch = document.createElement("a")
             anch.setAttribute('href', 'https://na.op.gg/summoners/na/' + rank.summonerName)
@@ -421,6 +302,12 @@
             setTimeout( () => {positionAccountsOnMeter(info,summonerName)}, 500)
             
         }
+        let ul = document.createElement("ul")
+        let li = document.createElement("li")
+        ul.innerText = "Total"
+        li.innerText = "winLose: " + wins + " - " + losses
+        ul.append(li)
+        document.querySelector("#main").before(ul)
 
         let imgSrc = isChadHappy ? happySrc : sadSrc
         let chadStatText = isChadHappy ? "Chad is happy " : "Chad is sad " 
