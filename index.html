@@ -124,7 +124,6 @@
     let happySrc = "./happy.png"
     let sadSrc = "./sad.png"
     
-
     class Account {
         constructor(someObject) {
             this.id = someObject?.id; // id = encryptedId
@@ -195,6 +194,7 @@
     }
     
     
+    let bannedArr = ["Pog Mode"]
     let allAccounts = [ 
         new Account({
             id: "AQ36Zl7hI8x5xx3C6y3-nZ6Fa-z-xwqMMrbFnDZEu3EHh6QhZvT6MEBL2Q",
@@ -217,6 +217,8 @@
         console.log("************************************");
         console.log("******* Start fetching data ********");
         console.log("************************************");
+        let tftRank = await allAccounts[0].getTft()
+        // return
         let allRankings = [];
         for (let account of allAccounts) {
             if (!account.id) {
@@ -284,11 +286,13 @@
             anch.setAttribute('href', 'https://na.op.gg/summoners/na/' + rank.summonerName)
             anch.setAttribute('target', '_blank')
             anch.setAttribute('rel', 'noopener noreferrer')
-            anch.innerText = rank.summonerName
+            anch.innerText = bannedArr.includes(rank.summonerName) ? rank.summonerName + " (BANNED)" : rank.summonerName 
             ul.appendChild(anch)
             document.getElementById("main").append(ul)
             for (const [key, val] of Object.entries(info)) {
-                if (key=='tier' && (val.toUpperCase() == "MASTER" || val.toUpperCase() == "GRANDMASTER")) {
+                if (key=='tier' 
+                    && !bannedArr.includes(rank.summonerName)
+                    && (val.toUpperCase() == "MASTER" || val.toUpperCase() == "GRANDMASTER")) {
                     // chadStatText = "Chad is sad &#128546;"
                     isChadHappy = false
                 }
@@ -379,9 +383,10 @@
             if (document.getElementById(summonerName.replace(/\s/g, "")) ) {
                 account = document.getElementById(summonerName.replace(/\s/g, ""))
             } else {
-                account = document.createElement("div")
+            account = document.createElement("div")
                 account.id = summonerName.replace(/\s/g, "");
-                account.innerText = summonerName
+                account.innerText = bannedArr.includes(summonerName) ? "☠️" + summonerName : summonerName;
+                // account.innerText = summonerName
                 document.body.appendChild(account)
                 account.classList.add("meter-accounts")
             }
@@ -549,7 +554,8 @@
             text-overflow: ellipsis;
             overflow: hidden;
             font-size: 14px;
-            height: 14px;
+            height: 17px;
+            line-height: 18px;
         }
         .meter-accounts::before {
             content: " ";
