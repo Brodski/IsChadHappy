@@ -396,7 +396,7 @@
                 account.classList.add("meter-accounts")
             }
             let bannedOffset = 0;
-            if (bannedArr.includes(summonerName)) {
+            if (bannedArr.includes(summonerName) && info.points == 75) {
                 bannedOffset = bannedArr.indexOf(summonerName) * 15;
                 if (bannedArr.indexOf(summonerName) > 0) {
                     account.classList.add("disabled-hyphen")                    
