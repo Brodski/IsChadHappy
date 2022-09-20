@@ -210,7 +210,12 @@
             id: "oVvwQO9XPxojZURXibfAUOqWXl0M4Fvxk-qM64DMKO4u8JA", 
             name: "Pog Mode",
             namesAll: ["Pog Mode"]    
-        })
+        }),
+        new Account({
+            id: "nIQ6RHVUyx3RPIDlW4qsKsBt-sNezBb4zqvBwouYn1h6-AM",
+            name: "keine Hosen",
+            namesAll: ["keine Hosen"]
+        }),
     ];
 
     async function go() {
@@ -383,16 +388,22 @@
             if (document.getElementById(summonerName.replace(/\s/g, "")) ) {
                 account = document.getElementById(summonerName.replace(/\s/g, ""))
             } else {
-            account = document.createElement("div")
+                account = document.createElement("div")
                 account.id = summonerName.replace(/\s/g, "");
                 account.innerText = bannedArr.includes(summonerName) ? "☠️" + summonerName : summonerName;
                 // account.innerText = summonerName
                 document.body.appendChild(account)
                 account.classList.add("meter-accounts")
             }
-
-            account.style.top = (division.getBoundingClientRect().top + offset) + "px"
-            account.style.left = division.getBoundingClientRect().left + "px"
+            let bannedOffset = 0;
+            if (bannedArr.includes(summonerName)) {
+                bannedOffset = bannedArr.indexOf(summonerName) * 15;
+                if (bannedArr.indexOf(summonerName) > 0) {
+                    account.classList.add("disabled-hyphen")                    
+                }
+            }
+            account.style.top = (division.getBoundingClientRect().top + offset + bannedOffset) + "px"
+            account.style.left = (division.getBoundingClientRect().left) + "px"
         }
         runIt()
         window.addEventListener("resize", runIt)
@@ -564,6 +575,9 @@
             position: absolute;
             height: 50%;
             border-bottom: 2px solid black;
+        }
+        .disabled-hyphen::before {
+            content: unset;
         }
         :root {
             --account-padding: 15px;
