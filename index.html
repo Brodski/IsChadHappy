@@ -194,7 +194,7 @@
     }
     
     
-    let bannedArr = ["Pog Mode","hi im washed up"]
+    let bannedArr = ["Pog Mode","hi im washed up", "Bleeko"]
     let allAccounts = [ 
         new Account({
             id: "AQ36Zl7hI8x5xx3C6y3-nZ6Fa-z-xwqMMrbFnDZEu3EHh6QhZvT6MEBL2Q",
@@ -225,6 +225,11 @@
             id: "WU0939L93pHADU1N-Xz6IRHmE5HttLS29UmLR1pWLD8EbTE",
             name: "Geraniho",
             namesAll: ["Geraniho"]
+        }),
+        new Account({
+            id: "skfKxbjUFuCTZPAXdP1KArt1eRPnwVaDg-0BmtTxw7toxDU",
+            name: "Kittencannon420",
+            namesAll: ["Kittencannon420"]
         })
     ];
 
@@ -407,7 +412,7 @@
             } else {
                 account = document.createElement("div")
                 account.id = summonerName.replace(/\s/g, "");
-                account.innerText = bannedArr.includes(summonerName) ? "☠️" + summonerName : summonerName;
+                account.innerText = bannedArr.includes(summonerName) ? "💀" + summonerName : summonerName; // skull and crossbones
                 // account.innerText = summonerName
                 document.body.appendChild(account)
                 account.classList.add("meter-accounts")
