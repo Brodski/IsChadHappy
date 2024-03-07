@@ -224,7 +224,7 @@
     let allAccounts = [  // "name" gets set again via the API, magical name changing update
         new Account({
             id: "a96Fwtob2kVhbrTtIw6feWUFaQb8frWBWUiDKZmV4nIni4pnITPty4iOaQ",
-            name: "TYRUNZZ", // aka gameName - roit API
+            name: "TYRUNZZ", // aka gameName - riot API
             tagLine: "9881",
             namesAll: ["TYRUNZZ","WingVampre"],
             puuid: "TPLvjDF-Fvj40geiqzhQFXA_QUyeoUmKdY0Yg4yj_ipAYhxEIpfxpQEh8mf4dAHlUkRoYtO1SxAW_w",
@@ -232,11 +232,29 @@
         new Account({
             id: "AQ36Zl7hI8x5xx3C6y3-nZ6Fa-z-xwqMMrbFnDZEu3EHh6QhZvT6MEBL2Q",
             name: "Geranimo",
+            tagLine: "Old",
             namesAll: ["Geranimo", "Short Tom Cruise", "llIlllIlllIII", "Hi I'm Boomer"]
         }),
         new Account({
+            id: "NHR6TBHsZHezXXQEP-wY4UW3g9ZwXDrs724JD15B44Ag539Hp9hI91FaBA",
+            name: "Oldge#KEKW",
+            tagLine: "KEKW",
+            namesAll: ["Oldge#KEKW","Oldge Man"]
+        }),
+        new Account({
+            id: "WU0939L93pHADU1N-Xz6IRHmE5HttLS29UmLR1pWLD8EbTE",
+            name: "Ominareg",
+            tagLine: "KEKW",
+            namesAll: ["Ominareg","Geraniho"]
+        }),
+        new Account({
+            id: "skfKxbjUFuCTZPAXdP1KArt1eRPnwVaDg-0BmtTxw7toxDU",
+            name: "Oldge#Man",
+            tagLine: "Man",
+            namesAll: ["Oldge#Man","Oldge","Kittencannon420"]
+        }),
+        new Account({
             id: "VpZZheO1UOaC3XDcUpD0cDkCkD5pTCBMkR36bCd534uboPk",
-            displayName: "",
             name: "hi im washed up",
             namesAll: ["hi im washed up"]
         }), 
@@ -248,6 +266,7 @@
         new Account({
             id: "nIQ6RHVUyx3RPIDlW4qsKsBt-sNezBb4zqvBwouYn1h6-AM",
             name: "OLDMAN",
+            tagLine: "001",
             namesAll: ["OLDMAN","lolgeranimo", "keine Hosen"]
         }),
         new Account({
@@ -255,21 +274,6 @@
             name: "Bleeko",
             namesAll: ["Bleeko"]
         }),
-        new Account({
-            id: "WU0939L93pHADU1N-Xz6IRHmE5HttLS29UmLR1pWLD8EbTE",
-            name: "Ominareg",
-            namesAll: ["Ominareg","Geraniho"]
-        }),
-        new Account({
-            id: "skfKxbjUFuCTZPAXdP1KArt1eRPnwVaDg-0BmtTxw7toxDU",
-            name: "Oldge#Man",
-            namesAll: ["Oldge#Man","Oldge","Kittencannon420"]
-        }),
-        new Account({
-            id: "NHR6TBHsZHezXXQEP-wY4UW3g9ZwXDrs724JD15B44Ag539Hp9hI91FaBA",
-            name: "Oldge#KEKW",
-            namesAll: ["Oldge#KEKW","Oldge Man"]
-        })
     ];
 
 
@@ -344,6 +348,7 @@
                 for (let rk of rank){
                     if (rk.queueType == "RANKED_SOLO_5x5"){
                         rk.displayNameBski = account.name
+                        rk.tagLineBski = account.tagLine
                         allRankings.push(rk)
                     }
                 }
@@ -375,7 +380,7 @@
             let divsion =  rank.rank
             let tier = rank.tier
             let points = rank.leaguePoints
-            let summonerName = rank.displayNameBski ?? rank.summonerName
+            let summonerName = rank.displayNameBski;
             console.log("SUMMER NAME!!!!!!!", rank.displayNameBski)
             console.log("SUMMER NAME!!!!!!!", summonerName)
             console.log("SUMMER NAME!!!!!!!", summonerName)
@@ -393,15 +398,16 @@
             losses = losses + rank.losses;
             let ul = document.createElement("ul")
             let anch = document.createElement("a")
-            anch.setAttribute('href', 'https://na.op.gg/summoners/na/' + rank.summonerName)
+            let tagAux = rank.tagLineBski ? `-${rank.tagLineBski}` : ""
+            anch.setAttribute('href', 'https://na.op.gg/summoners/na/' + rank.displayNameBski.split("#")[0] + tagAux)
             anch.setAttribute('target', '_blank')
             anch.setAttribute('rel', 'noopener noreferrer')
-            anch.innerText = bannedArr.includes(rank.summonerName) ? rank.summonerName + " (BANNED)" : rank.summonerName 
+            anch.innerText = bannedArr.includes(rank.displayNameBski ) ? rank.displayNameBski  + " (BANNED)" : rank.displayNameBski 
             ul.appendChild(anch)
             document.getElementById("main").before(ul)
             for (const [key, val] of Object.entries(info)) {
                 if (key=='tier' 
-                    && !bannedArr.includes(rank.summonerName)
+                    && !bannedArr.includes(rank.displayNameBski )
                     && (val.toUpperCase() == "MASTER" || val.toUpperCase() == "GRANDMASTER")) {
                     // chadStatText = "Chad is sad &#128546;"
                     isChadHappy = false
@@ -412,7 +418,7 @@
                 li.innerText = info
                 ul.append(li)
             }
-            setTimeout( () => {positionAccountsOnMeter(info,summonerName)}, 500)
+            setTimeout( () => {positionAccountsOnMeter(info, summonerName)}, 500)
             
         }
         let ul = document.createElement("ul")
