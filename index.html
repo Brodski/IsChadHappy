@@ -223,6 +223,13 @@
     let bannedArr = ["Pog Mode","hi im washed up", "Bleeko"]
     let allAccounts = [  // "name" gets set again via the API, magical name changing update
         new Account({
+            // id: "Yba6bn4fS_GvmTdiQF8d3WXUJYC-xqPRE-aOh1oRolwPq1g12TTxiOLp",
+            puuid: "8lK1b7jzM3A9jRqwc14VHnMRLKTBf7wbddbzOAGjW-u-Ghyxh0ZtSfJQrWz67mVWVm5Ji4DyMdvFjg",
+            name: "Rank 1 Adc",
+            tagLine: "NA2",
+            namesAll: ["Rank 1 Adc"]
+        }),
+        new Account({
             id: "AQ36Zl7hI8x5xx3C6y3-nZ6Fa-z-xwqMMrbFnDZEu3EHh6QhZvT6MEBL2Q",
             name: "Geranimo",
             tagLine: "Old",
@@ -314,7 +321,7 @@
         // return
         let allRankings = [];
         for (let account of allAccounts) {
-            if (account.id == "" && account.puuid == "") {
+            if ((account.id == null || account.id == "") && (account.puuid == null || account.puuid == "" )) {
                 console.log("account", account)
                 console.log("account.id", account.id)
                 console.log("account.puuid", account.puuid)
@@ -323,7 +330,7 @@
                 account.id = accountId;
             } 
             
-            if (account.id == "" && account.puuid != "") {
+            if ((account.id == "" || account.id == null) && (account.puuid != null && account.puuid != "")) {
                 console.log("Getting account info my puuid")
                 console.log("account", account)
                 let id = await account.getIdByPuuid(); 
