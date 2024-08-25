@@ -235,16 +235,8 @@
             namesAll: ["Geranimo", "Short Tom Cruise", "llIlllIlllIII", "Hi I'm Boomer"]
         }),
         new Account({
-            // id: "Yba6bn4fS_GvmTdiQF8d3WXUJYC-xqPRE-aOh1oRolwPq1g12TTxiOLp",
-            puuid: "8lK1b7jzM3A9jRqwc14VHnMRLKTBf7wbddbzOAGjW-u-Ghyxh0ZtSfJQrWz67mVWVm5Ji4DyMdvFjg",
-            name: "Rank 1 Adc",
-            tagLine: "NA2",
-            namesAll: ["Rank 1 Adc"]
-        }),
-        new Account({
             id: "NHR6TBHsZHezXXQEP-wY4UW3g9ZwXDrs724JD15B44Ag539Hp9hI91FaBA",
             name: "Nobody Really",
-            // name: "Nobody Really#None",
             tagLine: "None",
             namesAll: ["Nobody Really#None", "Oldge#KEKW","Oldge Man"]
         }),
@@ -277,10 +269,17 @@
         // }),
         new Account({
             id: "a96Fwtob2kVhbrTtIw6feWUFaQb8frWBWUiDKZmV4nIni4pnITPty4iOaQ",
-            name: "TYRUNZZ", // aka gameName - riot API
-            tagLine: "9881",
-            namesAll: ["TYRUNZZ","WingVampre"],
+            name: "IlIllIIllIlI", // aka gameName - riot API
+            tagLine: "APJ",
+            namesAll: ["IlIllIIllIlI", "TYRUNZZ","WingVampre"],
             puuid: "TPLvjDF-Fvj40geiqzhQFXA_QUyeoUmKdY0Yg4yj_ipAYhxEIpfxpQEh8mf4dAHlUkRoYtO1SxAW_w",
+        }),
+        new Account({
+            // id: "Yba6bn4fS_GvmTdiQF8d3WXUJYC-xqPRE-aOh1oRolwPq1g12TTxiOLp", idk why but this breaks it for Rank 1 Adc
+            puuid: "8lK1b7jzM3A9jRqwc14VHnMRLKTBf7wbddbzOAGjW-u-Ghyxh0ZtSfJQrWz67mVWVm5Ji4DyMdvFjg",
+            name: "Rank 1 Adc",
+            tagLine: "NA2",
+            namesAll: ["Rank 1 Adc"],
         }),
     ];
 
@@ -462,7 +461,8 @@
         //         points: rank.leaguePoints,
         //     }
         const runIt = () => {
-            // console.log(info )
+            console.log(info )
+            console.log(summonerName )
             let division;
             let maxPoints = 100;
             if (info.tier.toUpperCase() == "DIAMOND") {
@@ -500,7 +500,8 @@
             }
 
             if (!division) {
-                console.log("division not found :(")
+                // console.log("division not found :(")
+                // Account is not diamond or above
                 return
             }
 
