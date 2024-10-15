@@ -147,10 +147,10 @@
         async getIdByPuuid() {
             let rankingFetchUrl = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${this.puuid}?api_key=${a_key}`;
             let responseJson = await this.makeRequest(rankingFetchUrl, "Failed getting rank :( ", 'HTTP request error! Failed to get ranking info.  Status: ');
-            console.log("(new) IMPORTANT! add this ID to Accounts array ---->");
-            console.log("(new) IMPORTANT! add this ID to Accounts array ---->");
-            console.log("(new) IMPORTANT! add this ID to Accounts array ---->");
-            console.log("(new) IMPORTANT! add this ID to Accounts array ---->");
+            console.log("(deprecated dont do this) IMPORTANT! add this ID to Accounts array ---->");
+            console.log("(deprecated dont do this) IMPORTANT! add this ID to Accounts array ---->");
+            console.log("(deprecated dont do this) IMPORTANT! add this ID to Accounts array ---->");
+            console.log("(deprecated dont do this) IMPORTANT! add this ID to Accounts array ---->");
             console.log(this.name + "   :   " + responseJson.accountId  )
             console.log(this.name + "   :   " + responseJson.accountId  )
             console.log(this.name + "   :   " + responseJson.accountId  )
@@ -220,13 +220,13 @@
     }
     
     
-    let bannedArr = ["Pog Mode","hi im washed up", "Bleeko"]
+    let bannedArr = ["Pog Mode","hi im washed up (dup account name)", "Bleeko", "Oldge#Man"]
     let allAccounts = [  // "name" gets set again via the API, magical name changing update
         new Account({
-            id: "nIQ6RHVUyx3RPIDlW4qsKsBt-sNezBb4zqvBwouYn1h6-AM",
-            name: "World First",
-            tagLine: "OLD",
-            namesAll: ["World First","OLDMAN","lolgeranimo", "keine Hosen"]
+            puuid: "YQcGEGm8j5LU0bSHQbHwP5hbxaz6R4SVd3FitH9yOHx7WdRrG0mClHZutU1h04mo2zIvdDlTEYyaBA",
+            name: "Hi im washed up",
+            tagLine: "APJ",
+            namesAll: ["World First#OLD","OLDMAN","lolgeranimo", "keine Hosen"]
         }),
         new Account({
             id: "AQ36Zl7hI8x5xx3C6y3-nZ6Fa-z-xwqMMrbFnDZEu3EHh6QhZvT6MEBL2Q",
