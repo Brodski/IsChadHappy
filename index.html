@@ -145,70 +145,80 @@
             this.losesTft = null;
         }
 
-        async getRankedLolById() {
-            let rankingFetchUrl = "https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + this.id + "?api_key=" + a_key;
+        async getPuuidByName() { 
+            let rankingFetchUrl = `https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${this.name}/${this.tagLine}?api_key=${a_key}`;
             let responseJson = await this.makeRequest(rankingFetchUrl, "Failed getting rank :( ", 'HTTP request error! Failed to get ranking info.  Status: ');
-            return responseJson            
-        }
-        async getIdByPuuid() {
-            let rankingFetchUrl = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${this.puuid}?api_key=${a_key}`;
-            let responseJson = await this.makeRequest(rankingFetchUrl, "Failed getting rank :( ", 'HTTP request error! Failed to get ranking info.  Status: ');
-            console.log("(deprecated dont do this) IMPORTANT! add this ID to Accounts array ---->");
-            console.log("(deprecated dont do this) IMPORTANT! add this ID to Accounts array ---->");
-            console.log("(deprecated dont do this) IMPORTANT! add this ID to Accounts array ---->");
-            console.log("(deprecated dont do this) IMPORTANT! add this ID to Accounts array ---->");
-            console.log(this.name + "   :   " + responseJson.accountId  )
-            console.log(this.name + "   :   " + responseJson.accountId  )
-            console.log(this.name + "   :   " + responseJson.accountId  )
-            console.log(this.name + "   :   " + responseJson.accountId  )
-            console.log(this.name + "   :   " + responseJson.accountId  )
-            console.log(this.name + "   :   " + responseJson.accountId  )
-            console.log(this.name + "   :   " + responseJson.accountId  )
-            console.log(this.name + "   :   " + responseJson.accountId  )
+            console.log("IMPORTANT! add this ID (puuid) to Accounts array ---->");
+            console.log("IMPORTANT! add this ID (puuid) to Accounts array ---->");
+            console.log("IMPORTANT! add this ID (puuid) to Accounts array ---->");
+            console.log("IMPORTANT! add this ID (puuid) to Accounts array ---->");
+            console.log(this.name + "   :   " + responseJson.puuid  )
+            console.log(this.name + "   :   " + responseJson.puuid  )
+            console.log(this.name + "   :   " + responseJson.puuid  )
+            console.log(this.name + "   :   " + responseJson.puuid  )
+            console.log(this.name + "   :   " + responseJson.puuid  )
+            console.log(this.name + "   :   " + responseJson.puuid  )
+            console.log(this.name + "   :   " + responseJson.puuid  )
+            console.log(this.name + "   :   " + responseJson.puuid  )
             console.log(responseJson  )
-            return responseJson.id
+            return responseJson.puuid
         }
         
 
-        async getIdByName() {
-            // let summonerFetchUrl = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + this.name + "?api_key=" + a_key;
-            let summonerFetchUrl = `https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${this.name}/${this.tagLine}?api_key=${a_key}`;
-            let responseJson = await this.makeRequest(summonerFetchUrl, "Failed, probably a name change", 'HTTP request error! Failed to get Id.  Status: ');
-            
-
-            console.log(responseJson)
-            console.log("IMPORTANT! add this ID to Accounts array ---->");
-            console.log("IMPORTANT! add this ID to Accounts array ---->");
-            console.log("IMPORTANT! add this ID to Accounts array ---->");
-            console.log("IMPORTANT! add this ID to Accounts array ---->");
-            console.log(this.name + "   :   " + responseJson.puuid  )
-            console.log(this.name + "   :   " + responseJson.puuid  )
-            console.log(this.name + "   :   " + responseJson.puuid  )
-            console.log(this.name + "   :   " + responseJson.puuid  )
-            console.log(this.name + "   :   " + responseJson.puuid  )
-            console.log(this.name + "   :   " + responseJson.puuid  )
-            console.log(this.name + "   :   " + responseJson.puuid  )
-            console.log(this.name + "   :   " + responseJson.puuid  )
-            console.log(responseJson.id)
-            console.log("IF THE ABOVE FAILED JUST CLICK THE LINK AND COPY PASTE PUUID BACK INTO THE CODE");
-            console.log("IF THE ABOVE FAILED JUST CLICK THE LINK AND COPY PASTE PUUID BACK INTO THE CODE");
-            console.log("IF THE ABOVE FAILED JUST CLICK THE LINK AND COPY PASTE PUUID BACK INTO THE CODE");
-            console.log("IF THE ABOVE FAILED JUST CLICK THE LINK AND COPY PASTE PUUID BACK INTO THE CODE");
-            console.log("IF THE ABOVE FAILED JUST CLICK THE LINK AND COPY PASTE PUUID BACK INTO THE CODE");
-            console.log("IF THE ABOVE FAILED JUST CLICK THE LINK AND COPY PASTE PUUID BACK INTO THE CODE");
-
-            return responseJson.id
+        async getRankedLolByPuuid() {
+            let rankingFetchUrl = "https://na1.api.riotgames.com/lol/league/v4/entries/by-puuid/" + this.puuid + "?api_key=" + a_key;
+            let responseJson = await this.makeRequest(rankingFetchUrl, "Failed getting rank :( ", 'HTTP request error! Failed to get ranking info.  Status: ');
+            return responseJson            
         }
 
-        // async getTft() {
-        //     let tftFetchUrl = "https://na1.api.riotgames.com/tft/league/v1/entries/by-summoner/" + this.id + "?api_key=" + a_key;
-        //     console.log("TFT ", tftFetchUrl)
-        //     let responseJson = await this.makeRequest(tftFetchUrl, "Failed, getting TFT rank", 'HTTP request error! Failed to get Id.  Status: ');
-        //     console.log("TFT")
-        //     console.log("TFT")
-        //     console.log("TFT")
+        // async getIdByPuuid() {
+        //     let rankingFetchUrl = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${this.puuid}?api_key=${a_key}`;
+        //     let responseJson = await this.makeRequest(rankingFetchUrl, "Failed getting rank :( ", 'HTTP request error! Failed to get ranking info.  Status: ');
+        //     console.log("(deprecated dont do this) IMPORTANT! add this ID to Accounts array ---->");
+        //     console.log("(deprecated dont do this) IMPORTANT! add this ID to Accounts array ---->");
+        //     console.log("(deprecated dont do this) IMPORTANT! add this ID to Accounts array ---->");
+        //     console.log("(deprecated dont do this) IMPORTANT! add this ID to Accounts array ---->");
+        //     console.log(this.name + "   :   " + responseJson.accountId  )
+        //     console.log(this.name + "   :   " + responseJson.accountId  )
+        //     console.log(this.name + "   :   " + responseJson.accountId  )
+        //     console.log(this.name + "   :   " + responseJson.accountId  )
+        //     console.log(this.name + "   :   " + responseJson.accountId  )
+        //     console.log(this.name + "   :   " + responseJson.accountId  )
+        //     console.log(this.name + "   :   " + responseJson.accountId  )
+        //     console.log(this.name + "   :   " + responseJson.accountId  )
+        //     console.log(responseJson  )
+        //     return responseJson.id
+        // }
+        
+
+        // async getIdByName() {
+        //     let summonerFetchUrl = `https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${this.name}/${this.tagLine}?api_key=${a_key}`;
+        //                            `https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/geranimo/old?api_key=RGAPI-de701e57-80db-4698-945d-9d974993f80e`
+        //     let responseJson = await this.makeRequest(summonerFetchUrl, "Failed, probably a name change", 'HTTP request error! Failed to get Id.  Status: ');
+            
+
         //     console.log(responseJson)
-        //     return responseJson
+        //     console.log("IMPORTANT! add this ID to Accounts array ---->");
+        //     console.log("IMPORTANT! add this ID to Accounts array ---->");
+        //     console.log("IMPORTANT! add this ID to Accounts array ---->");
+        //     console.log("IMPORTANT! add this ID to Accounts array ---->");
+        //     console.log(this.name + "   :   " + responseJson.puuid  )
+        //     console.log(this.name + "   :   " + responseJson.puuid  )
+        //     console.log(this.name + "   :   " + responseJson.puuid  )
+        //     console.log(this.name + "   :   " + responseJson.puuid  )
+        //     console.log(this.name + "   :   " + responseJson.puuid  )
+        //     console.log(this.name + "   :   " + responseJson.puuid  )
+        //     console.log(this.name + "   :   " + responseJson.puuid  )
+        //     console.log(this.name + "   :   " + responseJson.puuid  )
+        //     console.log(responseJson.id)
+        //     console.log("IF THE ABOVE FAILED JUST CLICK THE LINK AND COPY PASTE PUUID BACK INTO THE CODE");
+        //     console.log("IF THE ABOVE FAILED JUST CLICK THE LINK AND COPY PASTE PUUID BACK INTO THE CODE");
+        //     console.log("IF THE ABOVE FAILED JUST CLICK THE LINK AND COPY PASTE PUUID BACK INTO THE CODE");
+        //     console.log("IF THE ABOVE FAILED JUST CLICK THE LINK AND COPY PASTE PUUID BACK INTO THE CODE");
+        //     console.log("IF THE ABOVE FAILED JUST CLICK THE LINK AND COPY PASTE PUUID BACK INTO THE CODE");
+        //     console.log("IF THE ABOVE FAILED JUST CLICK THE LINK AND COPY PASTE PUUID BACK INTO THE CODE");
+
+        //     return responseJson.id
         // }
 
         async makeRequest(fetchUrl, errorMsgRender="", errorMsgLog="" ) {
@@ -226,38 +236,58 @@
     }
     
     
-    let bannedArr = ["Pog Mode","hi im washed up (dup account name)", "Bleeko", "Oldge#Man"]
+    let bannedArr = ["Pog Mode","hi im washed up (dup account name)", "Bleeko", "Oldge#Man", "Geranimo#NA1", "Rank 1 Adc"]
     let allAccounts = [  // "name" gets set again via the API, magical name changing update
         new Account({
-            puuid: "YQcGEGm8j5LU0bSHQbHwP5hbxaz6R4SVd3FitH9yOHx7WdRrG0mClHZutU1h04mo2zIvdDlTEYyaBA",
+            puuid: "vD2kdS6ecmPkWmEOKSMGZ_Jg6Aljt3BgjKlZkteYjTyU78Td9fECGQ4vx-rEcDRSV25wP0etap0dbQ",
             name: "Hi im washed up",
             tagLine: "APJ",
             namesAll: ["World First#OLD","OLDMAN","lolgeranimo", "keine Hosen"]
         }),
         new Account({
             id: "AQ36Zl7hI8x5xx3C6y3-nZ6Fa-z-xwqMMrbFnDZEu3EHh6QhZvT6MEBL2Q",
+            puuid: "iby3nlIS8RgrhB9ZPX1AZEK0o-ffJKMdAxfn4dbaaUX0BUqK2Q4TLviYjHoBjqhKohlr-zbASnOqGg",
             name: "Geranimo",
             tagLine: "Old",
             namesAll: ["Geranimo", "Short Tom Cruise", "llIlllIlllIII", "Hi I'm Boomer"]
         }),
         new Account({
-            id: "NHR6TBHsZHezXXQEP-wY4UW3g9ZwXDrs724JD15B44Ag539Hp9hI91FaBA",
+            // id: "NHR6TBHsZHezXXQEP-wY4UW3g9ZwXDrs724JD15B44Ag539Hp9hI91FaBA",
+            puuid: "d5uZLuNIVhDnJVOMmI6JWjXIgxt25z0CowD6JbVcTBOekznAIjJ7CIkQ2Nex_uhOQZQvZWMBtscK1g",
             name: "Nobody Really",
             tagLine: "None",
             namesAll: ["Nobody Really#None", "Oldge#KEKW","Oldge Man"]
         }),
         new Account({
-            id: "WU0939L93pHADU1N-Xz6IRHmE5HttLS29UmLR1pWLD8EbTE",
+            // id: "WU0939L93pHADU1N-Xz6IRHmE5HttLS29UmLR1pWLD8EbTE",
+            puuid: "f-c8wu2EnjNhrFAm-c6l_W4wY_R-ISiRju63_FSta1TPCb_VEQobY9XeG-el-kJKdNKvy_Wf7wTl3w",
             name: "Ominareg",
             tagLine: "KEKW",
             namesAll: ["Ominareg","Geraniho"]
         }),
+        // new Account({
+        //     // id: "skfKxbjUFuCTZPAXdP1KArt1eRPnwVaDg-0BmtTxw7toxDU",
+        //     puuid: "HjM4pdw2ufiXDyuL5x3PFyzC1yuJb8I4i-F247EaJjTv34LKvWj-SUz3bb9Z93DtNbQzNwdYw34dxA",
+        //     name: "Oldge",
+        //     tagLine: "Man",
+        //     namesAll: ["Oldge#Man","Kittencannon420"]
+        // }),
         new Account({
-            id: "skfKxbjUFuCTZPAXdP1KArt1eRPnwVaDg-0BmtTxw7toxDU",
-            name: "Oldge#Man",
-            tagLine: "Man",
-            namesAll: ["Oldge#Man","Kittencannon420"]
+            // id: "a96Fwtob2kVhbrTtIw6feWUFaQb8frWBWUiDKZmV4nIni4pnITPty4iOaQ",
+            // puuid: "TPLvjDF-Fvj40geiqzhQFXA_QUyeoUmKdY0Yg4yj_ipAYhxEIpfxpQEh8mf4dAHlUkRoYtO1SxAW_w",
+            puuid: "4G5KMzF8pfBO9q5_GB4CSt3V-qnWgRh_HDgqNbWNQCmEnERVnl51BYz85EXd4mLCxmfCGPXS16CUNg",
+            name: "IlIllIIllIlI", // aka gameName - riot API
+            tagLine: "APJ",
+            namesAll: ["IlIllIIllIlI", "TYRUNZZ","WingVampre"],
         }),
+        // new Account({
+        //     // id: "Yba6bn4fS_GvmTdiQF8d3WXUJYC-xqPRE-aOh1oRolwPq1g12TTxiOLp", idk why but this breaks it for Rank 1 Adc
+        //     // puuid: "8lK1b7jzM3A9jRqwc14VHnMRLKTBf7wbddbzOAGjW-u-Ghyxh0ZtSfJQrWz67mVWVm5Ji4DyMdvFjg",
+        //     puuid: "",
+        //     name: "Rank 1 Adc",
+        //     tagLine: "NA2",
+        //     namesAll: ["Rank 1 Adc"],
+        // })
         // new Account({
         //     id: "VpZZheO1UOaC3XDcUpD0cDkCkD5pTCBMkR36bCd534uboPk",
         //     name: "hi im washed up",
@@ -273,20 +303,6 @@
         //     name: "Bleeko",
         //     namesAll: ["Bleeko"]
         // }),
-        new Account({
-            id: "a96Fwtob2kVhbrTtIw6feWUFaQb8frWBWUiDKZmV4nIni4pnITPty4iOaQ",
-            name: "IlIllIIllIlI", // aka gameName - riot API
-            tagLine: "APJ",
-            namesAll: ["IlIllIIllIlI", "TYRUNZZ","WingVampre"],
-            puuid: "TPLvjDF-Fvj40geiqzhQFXA_QUyeoUmKdY0Yg4yj_ipAYhxEIpfxpQEh8mf4dAHlUkRoYtO1SxAW_w",
-        }),
-        new Account({
-            // id: "Yba6bn4fS_GvmTdiQF8d3WXUJYC-xqPRE-aOh1oRolwPq1g12TTxiOLp", idk why but this breaks it for Rank 1 Adc
-            puuid: "8lK1b7jzM3A9jRqwc14VHnMRLKTBf7wbddbzOAGjW-u-Ghyxh0ZtSfJQrWz67mVWVm5Ji4DyMdvFjg",
-            name: "Rank 1 Adc",
-            tagLine: "NA2",
-            namesAll: ["Rank 1 Adc"],
-        }),
     ];
 
 
@@ -322,40 +338,24 @@
         console.log("************************************");
         console.log("******* Start fetching data ********");
         console.log("************************************");
-        // let tftRank = await allAccounts[0].getTft()
-        // return
         let allRankings = [];
         for (let account of allAccounts) {
-            if ((account.id == null || account.id == "") && (account.puuid == null || account.puuid == "" )) {
+            if (account.puuid == null || account.puuid == "" ) {
                 console.log("account", account)
-                console.log("account.id", account.id)
-                console.log("account.puuid", account.puuid)
-                console.log("GGetting account info my name")
-                let accountId = await account.getIdByName(); 
-                account.id = accountId;
+                console.log("Getting account info my name")
+                let accountPuuid = await account.getPuuidByName(); 
+                account.puuid = accountPuuid;
+                
             } 
-            
-            if ((account.id == "" || account.id == null) && (account.puuid != null && account.puuid != "")) {
-                console.log("Getting account info my puuid")
-                console.log("account", account)
-                let id = await account.getIdByPuuid(); 
-                account.id = id;
-            } 
-            let rank = await account.getRankedLolById()
-            if (rank.summonerName) { 
-                // account.name = rank.summonerName  // DEPRECATED!!!!!
-            }
+            let rank = await account.getRankedLolByPuuid()
+
 
             console.log("**********************************************" )
             let uName = (rank.length > 0 ? rank[0].summonerName : "");
             console.log("account.puuid: ", account.puuid )
             console.log("Current name: ", uName )
             console.log("Previous names: " + account.namesAll)
-            console.log("Rank for id: " + account.id)
-            console.log("Rank for: " + uName)
             console.log(rank)
-
-            // let tftRank = await account.getTft();
 
             if (rank != "error") { // again, shitty error checking. Also repeated code
                 for (let rk of rank){
@@ -394,11 +394,6 @@
             let tier = rank.tier
             let points = rank.leaguePoints
             let summonerName = rank.displayNameBski;
-            console.log("SUMMER NAME!!!!!!!", rank.displayNameBski)
-            console.log("SUMMER NAME!!!!!!!", summonerName)
-            console.log("SUMMER NAME!!!!!!!", summonerName)
-            console.log("SUMMER NAME!!!!!!!", summonerName)
-            console.log("SUMMER NAME!!!!!!!", summonerName)
             let info = {
                 tier: rank.tier,
                 divsion:  rank.rank,
