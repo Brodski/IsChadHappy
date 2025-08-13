@@ -457,6 +457,7 @@
         //         points: rank.leaguePoints,
         //     }
         const runIt = () => {
+            console.log("---------------------------")
             console.log(info )
             console.log(summonerName )
             let division;
@@ -556,6 +557,20 @@
     <!-- ///////////////////////////////////////////////////////////// -->
     <!-- ///////////////////////////////////////////////////////////// -->
     <style>
+        /* @media (max-width: 786px) {
+            .wrapper {  
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 40px;
+            }
+        } */
+        body {
+            background-color: #181a1b;
+            color: #e8e6e3;
+        }
+        a {
+            color: #3d96ff
+        }
         .wrapper {  
             display: flex;
         }
@@ -570,6 +585,7 @@
             display: flex;
             visibility: hidden;
             background-color: #e7e7e7;
+            background-color: #26292a;
         }
         #main {
             visibility: hidden;
@@ -581,6 +597,7 @@
         }
         .meter {
             border: 2px solid black;
+            border: 2px solid #8c8273;
             height: 100%;
             width: var(--meter-width) ;
             display: flex;
@@ -590,6 +607,7 @@
         }
         .meter > div {
             border-bottom: 2px solid black;
+            border-bottom: 2px solid #8c8273;
             position: relative;
             height: 100%;
             
@@ -606,9 +624,11 @@
 
         .meter > div:nth-child(-n + 2) {
             background-color: #97008e6b;
+            background-color: #8e00866b;
         }
         .meter > div:nth-last-child(-n + 4) {  
             background-color: #3333ff54;
+            background-color: #0000ae54;
         }
 
 
@@ -643,6 +663,8 @@
             writing-mode: vertical-lr;
             letter-spacing: -4px;
             color: #0000008a;
+            color: #e8e6e38a;
+            /* color: #e8e6e3; */
         }
          #happy-vert {
             
@@ -660,6 +682,7 @@
 
         #happy-divider {        
             border-bottom: 2px solid black;
+            border-bottom: 2px solid #8c8273;
             margin-right: 4px;
             margin-left: 4px;
             margin-top: 14px;
@@ -699,7 +722,7 @@
             left: 0;
             position: absolute;
             height: 50%;
-            border-bottom: 2px solid black;
+            border-bottom: 2px solid #8c8273;
         }
         .disabled-hyphen::before {
             content: unset;
