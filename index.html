@@ -247,7 +247,6 @@
         new Account({
             puuid: "FDNHPiYiichFRJKzUVR8VooJNNS6_SFcuQuQspHrrgs5uTbP7OQQR-5TkUC1awsg8OFBPOBeEOtNbA",
             name: "Geranimo",
-            // tagLine: "NA2",
             tagLine: "APJ",
             namesAll: ["Geranimo", "Geranimo", "Geranimo", "Short Tom Cruise", "llIlllIlllIII", "Hi I'm Boomer"] // yes 2 geranimos
         }),
@@ -268,6 +267,12 @@
             name: "IlIllIIllIlI", // aka gameName - riot API
             tagLine: "APJ",
             namesAll: ["IlIllIIllIlI", "TYRUNZZ","WingVampre"],
+        }),
+        new Account({
+            puuid: "vu3gprhc5mqlfUzefvua0KBsiQSGQO_5I7tIhmXPYo-6Mp-tyawpm2iBIhpHql9gFx-D0HLQJk3wdw",
+            name: "Annie Bot", // aka gameName - riot API
+            tagLine: "Tibrs",
+            namesAll: [],
         }),
         // new Account({
         //     // id: "skfKxbjUFuCTZPAXdP1KArt1eRPnwVaDg-0BmtTxw7toxDU",
@@ -511,6 +516,14 @@
                 account = document.createElement("div")
                 account.id = summonerName.replace(/\s/g, "");
                 account.innerText = bannedArr.includes(summonerName) ? "💀" + summonerName : summonerName; // skull and crossbones
+                if (account.innerText == "Annie Bot" ) {
+                    let annie = document.createElement("span")
+                    let annieImg = document.createElement("img")
+                    annie.appendChild(annieImg)
+                    annie.classList.add("player-icon")
+                    annieImg.setAttribute("src", "./annie.png")
+                    account.appendChild(annie)
+                }
                 // account.innerText = summonerName
                 document.body.appendChild(account)
                 account.classList.add("meter-accounts")
@@ -727,6 +740,9 @@
         }
         .disabled-hyphen::before {
             content: unset;
+        }
+        .player-icon img {
+            height: 16px;
         }
         :root {
             --account-padding: 15px;
