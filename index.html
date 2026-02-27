@@ -491,9 +491,9 @@
             }
             if (info.tier.toUpperCase() == "MASTER") {
                 division = document.querySelector("#masters")
-                maxPointsAux = 300
-                maxPoints = maxPointsAux
-                if (info.points > maxPointsAux ) {
+                let maxPointsAux_grandmaster = 670
+                maxPoints = maxPointsAux_grandmaster
+                if (info.points > maxPointsAux_grandmaster ) {
                     maxPoints = info.points + 100
                 }
             }
