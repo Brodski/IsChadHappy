@@ -417,7 +417,8 @@
             for (const [key, val] of Object.entries(info)) {
                 if (key=='tier' 
                     && !bannedArr.includes(rank.displayNameBski )
-                    && (val.toUpperCase() == "MASTER" || val.toUpperCase() == "GRANDMASTER")) {
+                    && (val.toUpperCase() == "MASTER" || val.toUpperCase() == "GRANDMASTER")
+                    && rank.displayNameBski != "Annie Bot") {
                     // chadStatText = "Chad is sad &#128546;"
                     isChadHappy = false
                 }
