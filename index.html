@@ -402,9 +402,10 @@
                 winLose: rank.wins + " - " + rank.losses
             }
 
-
-            wins = wins + rank.wins;
-            losses = losses + rank.losses;
+            if (rank.displayNameBski != "Annie Bot") {
+                wins = wins + rank.wins
+                losses = losses + rank.losses;
+            }
             let ul = document.createElement("ul")
             let anch = document.createElement("a")
             let tagAux = rank.tagLineBski ? `-${rank.tagLineBski}` : ""
