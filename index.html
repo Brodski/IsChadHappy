@@ -491,9 +491,9 @@
                         break
                 }
             }
+            let maxPointsAux_grandmaster = 776
             if (info.tier.toUpperCase() == "MASTER") {
                 division = document.querySelector("#masters")
-                let maxPointsAux_grandmaster = 746
                 maxPoints = maxPointsAux_grandmaster
                 if (info.points > maxPointsAux_grandmaster ) {
                     maxPoints = info.points + 50
@@ -502,6 +502,8 @@
             if (info.tier.toUpperCase() == "GRANDMASTER") {
                 division = document.querySelector("#gm")
                 maxPoints = 700;
+                // info.points = info.points - maxPointsAux_grandmaster;
+                info.points = Math.max(0, info.points - maxPointsAux_grandmaster);
             }
 
             if (!division) {
