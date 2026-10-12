@@ -493,6 +493,7 @@
             }
             // let maxPointsAux_grandmaster = 776
             let maxPointsAux_grandmaster = 1206 
+            let maxPointsAux_Challanger =  1900 
             if (info.tier.toUpperCase() == "MASTER") {
                 division = document.querySelector("#masters")
                 maxPoints = maxPointsAux_grandmaster
@@ -502,7 +503,8 @@
             }
             if (info.tier.toUpperCase() == "GRANDMASTER") {
                 division = document.querySelector("#gm")
-                maxPoints = 700;
+                // maxPoints = 700;
+                maxPoints = maxPointsAux_Challanger;
                 // info.points = info.points - maxPointsAux_grandmaster;
                 info.points = Math.max(0, info.points - maxPointsAux_grandmaster);
             }
