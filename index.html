@@ -492,7 +492,7 @@
                 }
             }
             // let maxPointsAux_grandmaster = 776
-            let maxPointsAux_grandmaster = 1206 
+            let maxPointsAux_grandmaster = 1280 
             let maxPointsAux_Challanger =  1900 
             if (info.tier.toUpperCase() == "MASTER") {
                 division = document.querySelector("#masters")
@@ -505,8 +505,9 @@
                 division = document.querySelector("#gm")
                 // maxPoints = 700;
                 maxPoints = maxPointsAux_Challanger;
-                // info.points = info.points - maxPointsAux_grandmaster;
-                info.points = Math.max(0, info.points - maxPointsAux_grandmaster);
+                // if (info.points > maxPointsAux_Challanger ) {
+                //     maxPoints = info.points + 50
+                // }
             }
 
             if (!division) {
@@ -514,8 +515,21 @@
                 // Account is not diamond or above
                 return
             }
+            let offset = division.getBoundingClientRect().height * (1 - ((info.points - maxPointsAux_grandmaster) / (maxPoints -  maxPointsAux_grandmaster)))
 
-            let offset = division.getBoundingClientRect().height * (1 - (info.points / maxPoints))
+            if (info.tier.toUpperCase() == "GRANDMASTER") {
+                // debugger
+                let = point_from_gm_to_chall = maxPointsAux_Challanger - maxPointsAux_grandmaster 
+                let points_needed_for_chall = maxPointsAux_Challanger - info.points
+                point_from_gm_to_chall = Math.max(point_from_gm_to_chall, 1) // div by zero
+                offset = division.getBoundingClientRect().height * ( (points_needed_for_chall / point_from_gm_to_chall))
+                
+                // console.log(summonerName, info.points, maxPoints)
+                // console.log("division.getBoundingClientRect().top", division.getBoundingClientRect().top)
+                // console.log(`${summonerName} X, point_from_gm_to_chall: ${point_from_gm_to_chall}, points_needed_for_chall: ${points_needed_for_chall}`)
+
+            }
+
             let account;
             if (document.getElementById(summonerName.replace(/\s/g, "")) ) {
                 account = document.getElementById(summonerName.replace(/\s/g, ""))
