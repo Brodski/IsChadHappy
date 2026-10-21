@@ -127,6 +127,10 @@
     /************************************************************************/
 
     let a_key = getKey();
+    let maxPointsAux_Challanger_CONST =  null;
+    let maxPointsAux_grandmaster_CONST =  null;
+    let isGM = false
+    let isMasters = false
     let happySrc = "./happy.png"
     let sadSrc = "./sad.png"
     
@@ -271,7 +275,7 @@
         new Account({
             puuid: "vu3gprhc5mqlfUzefvua0KBsiQSGQO_5I7tIhmXPYo-6Mp-tyawpm2iBIhpHql9gFx-D0HLQJk3wdw",
             name: "Annie Bot", // aka gameName - riot API
-            tagLine: "Tibrs",
+            tagLine: "Jared",
             namesAll: [],
         }),
         // new Account({
@@ -381,6 +385,38 @@
         console.log("allRankings")
         console.log("allRankings")
         console.log(allRankings)
+
+        for (let rank of allRankings) {
+            if (rank.tier.toUpperCase() == "GRANDMASTER") {
+                isGM = true
+            }
+            if (rank.tier.toUpperCase() == "MASTER") {
+                isMasters = true
+            }
+        }
+        if (isGM || isMasters) {
+            // Grandmasters
+            const res = await fetch(
+                `https://na1.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5`,
+                { headers: { "X-Riot-Token": a_key } }
+            );
+            const data = await res.json();
+
+            // Masters
+            const res2 = await fetch(
+                `https://na1.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/RANKED_SOLO_5x5`,
+                { headers: { "X-Riot-Token": a_key } }
+            );
+            const data2 = await res2.json();
+
+            const gm_and_chall = [...data.entries, ...data2.entries];
+            gm_and_chall.sort((a, b) => b.leaguePoints - a.leaguePoints);
+            
+            maxPointsAux_grandmaster_CONST = gm_and_chall[499]?.leaguePoints
+            maxPointsAux_Challanger_CONST = gm_and_chall[199]?.leaguePoints
+        }
+
+        
         renderRanking(allRankings)
     }
 
@@ -455,6 +491,16 @@
         }
 
         document.getElementById("chadStatus").innerHTML = ` <div> ${chadStatText} </div> <img src=${imgSrc} ></img>`;    
+
+        if (isGM || isMasters) {
+            let html = `<div>GM cutoff - <b> ${maxPointsAux_grandmaster_CONST} </b> </div>`;
+            if (isGM) {
+                html += `<div>Challenger - <b> ${maxPointsAux_Challanger_CONST} </b> </div>`;
+            }
+            document.getElementById("lpCutoff").innerHTML = `<ul> ${html} </ul>`;
+        }
+        
+
   
     }
 
@@ -492,8 +538,9 @@
                 }
             }
             // let maxPointsAux_grandmaster = 776
-            let maxPointsAux_grandmaster = 1280 
-            let maxPointsAux_Challanger =  1900 
+            let maxPointsAux_grandmaster = maxPointsAux_grandmaster_CONST ?? 1280;
+            let maxPointsAux_Challanger =  maxPointsAux_Challanger_CONST ?? 9999;
+
             if (info.tier.toUpperCase() == "MASTER") {
                 division = document.querySelector("#masters")
                 maxPoints = maxPointsAux_grandmaster
@@ -518,7 +565,6 @@
             let offset = division.getBoundingClientRect().height * (1 - ((info.points - maxPointsAux_grandmaster) / (maxPoints -  maxPointsAux_grandmaster)))
 
             if (info.tier.toUpperCase() == "GRANDMASTER") {
-                // debugger
                 let = point_from_gm_to_chall = maxPointsAux_Challanger - maxPointsAux_grandmaster 
                 let points_needed_for_chall = maxPointsAux_Challanger - info.points
                 point_from_gm_to_chall = Math.max(point_from_gm_to_chall, 1) // div by zero
@@ -794,6 +840,7 @@
         <div class="wrapper">
             <div>
                 <div id="chadStatus"> </div>
+                <div id="lpCutoff"> </div>
                 <div id="main"> 
                     <div id="banned-zone"> 
                         <hr/>
