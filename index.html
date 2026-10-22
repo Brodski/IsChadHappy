@@ -339,86 +339,184 @@
         ///////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////
-    async function go() {
-        console.log("************************************");
-        console.log("******* Start fetching data ********");
-        console.log("************************************");
-        let allRankings = [];
-        for (let account of allAccounts) {
-            if (account.puuid == null || account.puuid == "" ) {
-                console.log("account", account)
-                console.log("Getting account info my name")
-                let accountPuuid = await account.getPuuidByName(); 
-                account.puuid = accountPuuid;
+
+        // One account = one independent chain (puuid lookup if needed, then ranked)
+        async function fetchAccountRanking(account) {
+            if (!account.puuid) {
+                console.log("Getting account info by name", account);
+                account.puuid = await account.getPuuidByName();
+            }
+            const rank = await account.getRankedLolByPuuid();
+
+            console.log("**********************************************");
+            console.log("account.puuid: ", account.puuid);
+            console.log("Current name: ", rank.length > 0 ? rank[0].summonerName : "");
+            console.log("Previous names: " + account.namesAll);
+            console.log(rank);
+
+            if (rank === "error") return [];
+            return rank
+                .filter(rk => rk.queueType === "RANKED_SOLO_5x5")
+                .map(rk => ({ ...rk, displayNameBski: account.name, tagLineBski: account.tagLine }));
+        }
+
+        function fetchLeague(tier) { // "challenger" or "grandmaster"
+            return fetch(
+                `https://na1.api.riotgames.com/lol/league/v4/${tier}leagues/by-queue/RANKED_SOLO_5x5`,
+                { headers: { "X-Riot-Token": a_key } }
+            ).then(res => {
+                if (!res.ok) throw new Error(`${tier} league: HTTP ${res.status}`);
+                return res.json();
+            });
+        }
+
+        async function go() {
+            console.log("************************************");
+            console.log("******* Start fetching data ********");
+            console.log("************************************");
+
+            // 1. Fire everything now. Nothing is awaited yet.
+            const accountPromises = allAccounts.map(fetchAccountRanking);
+            const challengerPromise = fetchLeague("challenger");
+            const grandmasterPromise = fetchLeague("grandmaster");
+            // Avoid "unhandled rejection" warnings if we never end up awaiting these
+            challengerPromise.catch(() => {});
+            grandmasterPromise.catch(() => {});
+
+            // 2. Wait for all accounts; one failure doesn't kill the rest
+            const results = await Promise.allSettled(accountPromises);
+            const allRankings = [];
+            results.forEach((r, i) => {
+                if (r.status === "fulfilled") allRankings.push(...r.value);
+                else console.error("Failed for", allAccounts[i].name, r.reason);
+            });
+
+            console.log("*******  End fetching data  ********");
+            console.log(allRankings);
+
+            isGM = allRankings.some(r => r.tier.toUpperCase() === "GRANDMASTER");
+            isMasters = allRankings.some(r => r.tier.toUpperCase() === "MASTER");
+
+            // 3. Only now await the league data, and only if we need it.
+            //    It's probably already finished downloading by this point.
+            if (isGM || isMasters) {
+                const [challenger, grandmaster] = await Promise.all([challengerPromise, grandmasterPromise]);
+                const gm_and_chall = [...challenger.entries, ...grandmaster.entries];
+                gm_and_chall.sort((a, b) => b.leaguePoints - a.leaguePoints);
+
+                maxPointsAux_grandmaster_CONST = gm_and_chall[499]?.leaguePoints;
+                maxPointsAux_Challanger_CONST = gm_and_chall[199]?.leaguePoints;
+            }
+
+            console.log("************************************");
+            console.log("*******  End fetching data  ********");
+            console.log("************************************");
+            console.log("");
+            console.log("");
+            console.log("");
+            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+            console.log("^^^^^    Start Rendering     ^^^^^^")
+            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+            console.log("allRankings")
+            console.log("allRankings")
+            console.log("allRankings")
+            renderRanking(allRankings);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // async function go() {
+    //     console.log("************************************");
+    //     console.log("******* Start fetching data ********");
+    //     console.log("************************************");
+    //     let allRankings = [];
+    //     for (let account of allAccounts) {
+    //         if (account.puuid == null || account.puuid == "" ) {
+    //             console.log("account", account)
+    //             console.log("Getting account info my name")
+    //             let accountPuuid = await account.getPuuidByName(); 
+    //             account.puuid = accountPuuid;
                 
-            } 
-            let rank = await account.getRankedLolByPuuid()
+    //         } 
+    //         let rank = await account.getRankedLolByPuuid()
 
 
-            console.log("**********************************************" )
-            let uName = (rank.length > 0 ? rank[0].summonerName : "");
-            console.log("account.puuid: ", account.puuid )
-            console.log("Current name: ", uName )
-            console.log("Previous names: " + account.namesAll)
-            console.log(rank)
+    //         console.log("**********************************************" )
+    //         let uName = (rank.length > 0 ? rank[0].summonerName : "");
+    //         console.log("account.puuid: ", account.puuid )
+    //         console.log("Current name: ", uName )
+    //         console.log("Previous names: " + account.namesAll)
+    //         console.log(rank)
 
-            if (rank != "error") { // again, shitty error checking. Also repeated code
-                for (let rk of rank){
-                    if (rk.queueType == "RANKED_SOLO_5x5"){
-                        rk.displayNameBski = account.name
-                        rk.tagLineBski = account.tagLine
-                        allRankings.push(rk)
-                    }
-                }
-            }
-        }
-        console.log("************************************");
-        console.log("*******  End fetching data  ********");
-        console.log("************************************");
-        console.log("");
-        console.log("");
-        console.log("");
-        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-        console.log("^^^^^    Start Rendering     ^^^^^^")
-        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-        console.log("allRankings")
-        console.log("allRankings")
-        console.log("allRankings")
-        console.log(allRankings)
+    //         if (rank != "error") { // again, shitty error checking. Also repeated code
+    //             for (let rk of rank){
+    //                 if (rk.queueType == "RANKED_SOLO_5x5"){
+    //                     rk.displayNameBski = account.name
+    //                     rk.tagLineBski = account.tagLine
+    //                     allRankings.push(rk)
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     console.log("************************************");
+    //     console.log("*******  End fetching data  ********");
+    //     console.log("************************************");
+    //     console.log("");
+    //     console.log("");
+    //     console.log("");
+    //     console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+    //     console.log("^^^^^    Start Rendering     ^^^^^^")
+    //     console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+    //     console.log("allRankings")
+    //     console.log("allRankings")
+    //     console.log("allRankings")
+    //     console.log(allRankings)
 
-        for (let rank of allRankings) {
-            if (rank.tier.toUpperCase() == "GRANDMASTER") {
-                isGM = true
-            }
-            if (rank.tier.toUpperCase() == "MASTER") {
-                isMasters = true
-            }
-        }
-        if (isGM || isMasters) {
-            // Grandmasters
-            const res = await fetch(
-                `https://na1.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5`,
-                { headers: { "X-Riot-Token": a_key } }
-            );
-            const data = await res.json();
+    //     for (let rank of allRankings) {
+    //         if (rank.tier.toUpperCase() == "GRANDMASTER") {
+    //             isGM = true
+    //         }
+    //         if (rank.tier.toUpperCase() == "MASTER") {
+    //             isMasters = true
+    //         }
+    //     }
+    //     if (isGM || isMasters) {
+    //         // Grandmasters
+    //         const res = await fetch(
+    //             `https://na1.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5`,
+    //             { headers: { "X-Riot-Token": a_key } }
+    //         );
+    //         const data = await res.json();
 
-            // Masters
-            const res2 = await fetch(
-                `https://na1.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/RANKED_SOLO_5x5`,
-                { headers: { "X-Riot-Token": a_key } }
-            );
-            const data2 = await res2.json();
+    //         // Masters
+    //         const res2 = await fetch(
+    //             `https://na1.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/RANKED_SOLO_5x5`,
+    //             { headers: { "X-Riot-Token": a_key } }
+    //         );
+    //         const data2 = await res2.json();
 
-            const gm_and_chall = [...data.entries, ...data2.entries];
-            gm_and_chall.sort((a, b) => b.leaguePoints - a.leaguePoints);
+    //         const gm_and_chall = [...data.entries, ...data2.entries];
+    //         gm_and_chall.sort((a, b) => b.leaguePoints - a.leaguePoints);
             
-            maxPointsAux_grandmaster_CONST = gm_and_chall[499]?.leaguePoints
-            maxPointsAux_Challanger_CONST = gm_and_chall[199]?.leaguePoints
-        }
+    //         maxPointsAux_grandmaster_CONST = gm_and_chall[499]?.leaguePoints
+    //         maxPointsAux_Challanger_CONST = gm_and_chall[199]?.leaguePoints
+    //     }
 
         
-        renderRanking(allRankings)
-    }
+    //     renderRanking(allRankings)
+    // }
 
     function renderRanking(rankings) {
         let isChadHappy = true
